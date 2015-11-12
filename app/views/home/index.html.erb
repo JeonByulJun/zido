@@ -1,5 +1,36 @@
+<ul>
+    <button href="#"> <%= current_user.email %> </button>
+</ul>
+<ul>
+    <a href="/users/sign_out" data-method="delete"> Sign Out </a>
+</ul>
+
 <% content_for :header do %>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2xWsRsM--vAOE_I9dv-ljLh-nO6IU0pU&callback=initMap"></script>
 <% end %>
 <h1 id="title">Hello World!</h1>
 <div id="map"></div>
+
+<ul>
+    <a> Hello </a>
+</ul>
+
+<%=form_tag '/make', method:'post' do %>
+<ul>
+    <textarea name="tit" class="form-control" row="1"></textarea>
+</ul>
+<ul>
+    <textarea name="con" class="form-control" row="4"></textarea>
+</ul>
+<input type="submit">
+<% end %>
+<a id="abc">urtr</a>
+
+<div id="footer">
+<adress>
+    © 
+    <strong>
+        <a target="_blank">JEONBYULJUN Corp.</a>
+    </strong>
+</adress>
+</div>
