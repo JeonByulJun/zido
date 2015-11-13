@@ -11,21 +11,10 @@
 <h1 id="title">Hello World!</h1>
 <div id="map"></div>
 
-<ul>
-    <a> Hello </a>
-</ul>
 
-<%=form_tag '/make', method:'post' do %>
-<ul>
-    <textarea name="tit" class="form-control" row="1"></textarea>
-</ul>
-<ul>
-    <textarea name="con" class="form-control" row="4"></textarea>
-</ul>
-<input type="submit">
-<% end %>
-<a id="abc">urtr</a>
 
+
+<div id="formcontent"></div>
 <div id="footer">
 <adress>
     © 
@@ -34,3 +23,72 @@
     </strong>
 </adress>
 </div>
+
+<script>
+
+// This example displays a marker at the center of Australia.
+// When the user clicks the marker, an info window opens.
+
+function initMap() {
+    var mapCanvas = document.getElementById('map');
+    var mapOptions = {
+      center: new google.maps.LatLng(13, 121),
+      zoom: 4,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    var map = new google.maps.Map(mapCanvas, mapOptions);
+    
+
+
+    <% @memos.each do |p| %>
+        marker = new google.maps.Marker({
+            map: map,
+            position: {lat: <%=p.lat%>, lng: <%=p.lng%>}
+        });
+        //var contentString2 = 'title:'+
+        //                    <%=p.title%>+
+        //                    'content'+
+        //                    <%=p.content%>;
+        //var infowindow = new google.maps.InfoWindow({
+        //    content: contentString2
+        //});
+        //marker.addListener('click', function(){
+        //    infowindow.open(map, marker);
+        //});
+    <% end %>
+    
+    google.maps.event.addListener(map, 'rightclick', function(event) {
+    
+        startLocation = event.latLng;
+        var mark = new google.maps.Marker({
+          position: startLocation,
+          map: map
+        });
+        var contentString = '<%=form_tag '/make', method:'post' do %><ul><textarea name="tit" class="form-control" row="1"></textarea></ul><ul><textarea name="con" class="form-control" row="4"></textarea></ul>'+
+                            '<input type="hidden" name="time" value=<%=Time.now%>>'+
+                            '<input type="hidden" name="latitude" value='+
+                            startLocation.lat()+
+                            '><input type="hidden" name="longitude" value='+
+                            startLocation.lng()+
+                            '><input type="submit"><% end %>';
+        
+        var infowindow = new google.maps.InfoWindow({
+          content: contentString
+          
+        });
+        
+        mark.addListener('click', function(){
+          infowindow.open(map, mark);
+        });
+        google.maps.event.addListener(infowindow, 'closeclick', function(){
+            mark.setMap(null);
+        });
+
+    });
+
+}
+
+</script>
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2xWsRsM--vAOE_I9dv-ljLh-nO6IU0pU&signed_in=false&callback=initMap"></script>
+
