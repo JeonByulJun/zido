@@ -8,7 +8,7 @@
 <% content_for :header do %>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2xWsRsM--vAOE_I9dv-ljLh-nO6IU0pU&callback=initMap"></script>
 <% end %>
-<h1 id="title">Hello World!</h1>
+<input id="pac-input" class="controls" type="text" placeholder="Search Box">
 <div id="map"></div>
 
 
@@ -38,8 +38,53 @@ function initMap() {
     };
     var map = new google.maps.Map(mapCanvas, mapOptions);
     
+    var input = document.getElementById('pac-input');
+    var searchBox = new google.maps.places.SearchBox(input);
+    map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+    
+    map.addListener('bounds_changed', function() {
+        searchBox.setBounds(map.getBounds());
+    });
+    
+    searchBox.addListener('places_changed', function() {
+        var places = searchBox.getPlaces();
+    
+        if (places.length == 0) {
+          return;
+        }
+    
 
     
+        // For each place, get the icon, name and location.
+        var bounds = new google.maps.LatLngBounds();
+        places.forEach(function(place) {
+          var icon = {
+            url: place.icon,
+            size: new google.maps.Size(71, 71),
+            origin: new google.maps.Point(0, 0),
+            anchor: new google.maps.Point(17, 34),
+            scaledSize: new google.maps.Size(25, 25)
+          };
+    
+          // Create a marker for each place.
+          new google.maps.Marker({
+            map: map,
+            icon: icon,
+            title: place.name,
+            position: place.geometry.location
+          });
+    
+          if (place.geometry.viewport) {
+            // Only geocodes have viewport.
+            bounds.union(place.geometry.viewport);
+          } else {
+            bounds.extend(place.geometry.location);
+          }
+        });
+        map.fitBounds(bounds);
+    });
+    
+
     <% @memos.each_with_index do |p ,i| %>
         marker = new google.maps.Marker({
             map: map,
@@ -48,10 +93,19 @@ function initMap() {
         
 
         (function(marker){
-            var contentString2 = 'title:'+
-            <%=p.lat%>+
-            'content'+
-            <%=p.lng%>;
+            var titletemp = "<%=p.title%>";
+            var contenttemp = "<%=p.content%>";
+            
+            var contentString2 = 
+            '<p>'+
+            'title:'+
+             titletemp +
+            'content:'+
+            contenttemp +
+            '</p>';
+            
+
+
             google.maps.event.addListener(marker, 'click', function(){
                 infowindow = new google.maps.InfoWindow({
                     content: contentString2
@@ -59,17 +113,6 @@ function initMap() {
                 infowindow.open(map,marker);
             })
         })(marker);
-        
-
-        /*
-        var infowindow = new google.maps.InfoWindow({
-            position: {lat: <%=p.lat%>, lng: <%=p.lng%>},
-            content: contentString2
-        });
-        marker.addListener('click', function(){
-            infowindow.open(map, marker);
-        });
-        */
     <% end %>
     
     
@@ -106,5 +149,5 @@ function initMap() {
 
 </script>
 <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2xWsRsM--vAOE_I9dv-ljLh-nO6IU0pU&signed_in=false&callback=initMap"></script>
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2xWsRsM--vAOE_I9dv-ljLh-nO6IU0pU&signed_in=false&libraries=places&callback=initMap"></script>
 
