@@ -39,23 +39,39 @@ function initMap() {
     var map = new google.maps.Map(mapCanvas, mapOptions);
     
 
-
-    <% @memos.each do |p| %>
+    
+    <% @memos.each_with_index do |p ,i| %>
         marker = new google.maps.Marker({
             map: map,
             position: {lat: <%=p.lat%>, lng: <%=p.lng%>}
         });
-        //var contentString2 = 'title:'+
-        //                    <%=p.title%>+
-        //                    'content'+
-        //                    <%=p.content%>;
-        //var infowindow = new google.maps.InfoWindow({
-        //    content: contentString2
-        //});
-        //marker.addListener('click', function(){
-        //    infowindow.open(map, marker);
-        //});
+        
+
+        (function(marker){
+            var contentString2 = 'title:'+
+            <%=p.lat%>+
+            'content'+
+            <%=p.lng%>;
+            google.maps.event.addListener(marker, 'click', function(){
+                infowindow = new google.maps.InfoWindow({
+                    content: contentString2
+                });
+                infowindow.open(map,marker);
+            })
+        })(marker);
+        
+
+        /*
+        var infowindow = new google.maps.InfoWindow({
+            position: {lat: <%=p.lat%>, lng: <%=p.lng%>},
+            content: contentString2
+        });
+        marker.addListener('click', function(){
+            infowindow.open(map, marker);
+        });
+        */
     <% end %>
+    
     
     google.maps.event.addListener(map, 'rightclick', function(event) {
     
