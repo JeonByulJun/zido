@@ -5,10 +5,7 @@
     <a href="/users/sign_out" data-method="delete"> Sign Out </a>
 </ul>
 
-<% content_for :header do %>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2xWsRsM--vAOE_I9dv-ljLh-nO6IU0pU&callback=initMap"></script>
-<% end %>
-<h1 id="title">Hello World!</h1>
+<input id="pac-input" class="controls" type="text" placeholder="Search Box">
 <div id="map"></div>
 
 
@@ -30,6 +27,7 @@
 // When the user clicks the marker, an info window opens.
 
 function initMap() {
+    
     var mapCanvas = document.getElementById('map');
     var mapOptions = {
       center: new google.maps.LatLng(13, 121),
@@ -37,41 +35,104 @@ function initMap() {
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
     var map = new google.maps.Map(mapCanvas, mapOptions);
+
+    var input = document.getElementById('pac-input');
+    var searchBox = new google.maps.places.SearchBox(input);
     
 
+    map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+    
+    map.addListener('bounds_changed', function() {
+        searchBox.setBounds(map.getBounds());
+    });
+    
+    searchBox.addListener('places_changed', function() {
+        var places = searchBox.getPlaces();
+    
+        if (places.length == 0) {
+          return;
+        }
+    
 
-    <% @memos.each do |p| %>
+    
+        // For each place, get the icon, name and location.
+        var bounds = new google.maps.LatLngBounds();
+        places.forEach(function(place) {
+          var icon = {
+            url: place.icon,
+            size: new google.maps.Size(71, 71),
+            origin: new google.maps.Point(0, 0),
+            anchor: new google.maps.Point(17, 34),
+            scaledSize: new google.maps.Size(25, 25)
+          };
+    
+          // Create a marker for each place.
+          new google.maps.Marker({
+            map: map,
+            icon: icon,
+            title: place.name,
+            position: place.geometry.location
+          });
+    
+          if (place.geometry.viewport) {
+            // Only geocodes have viewport.
+            bounds.union(place.geometry.viewport);
+          } else {
+            bounds.extend(place.geometry.location);
+          }
+        });
+        map.fitBounds(bounds);
+    });
+    
+
+    <% @memos.each_with_index do |p ,i| %>
         marker = new google.maps.Marker({
             map: map,
             position: {lat: <%=p.lat%>, lng: <%=p.lng%>}
         });
-        //var contentString2 = 'title:'+
-        //                    <%=p.title%>+
-        //                    'content'+
-        //                    <%=p.content%>;
-        //var infowindow = new google.maps.InfoWindow({
-        //    content: contentString2
-        //});
-        //marker.addListener('click', function(){
-        //    infowindow.open(map, marker);
-        //});
+        
+
+        (function(marker){
+            var titletemp = "<%=p.title%>";
+            var contenttemp = "<%=p.content%>";
+            
+            var contentString2 = 
+            '<p>'+
+            'title:'+
+             titletemp +
+            'content:'+
+            contenttemp +
+            '</p>';
+            
+
+
+            google.maps.event.addListener(marker, 'click', function(){
+                infowindow = new google.maps.InfoWindow({
+                    content: contentString2
+                });
+                infowindow.open(map,marker);
+            })
+        })(marker);
     <% end %>
     
+    var markarray = [];  
     google.maps.event.addListener(map, 'rightclick', function(event) {
-    
+
         startLocation = event.latLng;
         var mark = new google.maps.Marker({
           position: startLocation,
           map: map
         });
+
         var contentString = '<%=form_tag '/make', method:'post' do %><ul><textarea name="tit" class="form-control" row="1"></textarea></ul><ul><textarea name="con" class="form-control" row="4"></textarea></ul>'+
                             '<input type="hidden" name="time" value=<%=Time.now%>>'+
                             '<input type="hidden" name="latitude" value='+
                             startLocation.lat()+
                             '><input type="hidden" name="longitude" value='+
                             startLocation.lng()+
-                            '><input type="submit"><% end %>';
-        
+                            '>'+
+                            '<input type="submit"><% end %>';
+
         var infowindow = new google.maps.InfoWindow({
           content: contentString
           
@@ -83,12 +144,18 @@ function initMap() {
         google.maps.event.addListener(infowindow, 'closeclick', function(){
             mark.setMap(null);
         });
-
+        markarray.push(mark);
+        
     });
+    //var mcOption = {girdSize: 50, maxZoom: 15};
+
+    var mc = new MarkerClusterer(map, markarray);
+
 
 }
 
 </script>
-<script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2xWsRsM--vAOE_I9dv-ljLh-nO6IU0pU&signed_in=false&callback=initMap"></script>
 
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2xWsRsM--vAOE_I9dv-ljLh-nO6IU0pU&signed_in=false&libraries=places&callback=initMap"></script>
+<script type="text/javascript" src="jquery.1.4.2.js"></script>
+<script type="text/javascript" src="jsDatePick.jquery.min.1.3.js"></script>
