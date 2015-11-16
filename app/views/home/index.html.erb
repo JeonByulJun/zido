@@ -25,9 +25,7 @@
 </div>
 
 <script>
-$(function () {
-    $("#datetimepicker1").datetimepicker();
-});
+
 var temp = 1;
 function handleClick(type){
     temp = type.value;
@@ -109,10 +107,11 @@ function initMap() {
             map: map,
             icon: images,
             position: {lat: <%=p.lat%>, lng: <%=p.lng%>},
-            animation: google.maps.Animation.DROP
+            animation: google.maps.Animation.DROP,
+            draggable: true
         });
         
-        marker.addListener('click', toggleBounce);
+
 
 
         (function(marker){
@@ -138,10 +137,11 @@ function initMap() {
                 marker.setAnimation(null);
             });
             google.maps.event.addListener(marker, 'click', function(){
-
                 infowindow.open(map,marker);
+                marker.setAnimation(google.maps.Animation.BOUNCE);   
             })
         })(marker);
+
     <% end %>
     
     var markarray = [];  
@@ -198,9 +198,7 @@ function initMap() {
 
 
 }
-function toggleBounce() {
-    marker.setAnimation(google.maps.Animation.BOUNCE);
-}
+
 </script>
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2xWsRsM--vAOE_I9dv-ljLh-nO6IU0pU&signed_in=false&libraries=places&callback=initMap"></script>
