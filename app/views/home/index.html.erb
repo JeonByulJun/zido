@@ -36,6 +36,33 @@ function handleClick(type){
 
 function initMap() {
     
+    mcOptions = {styles: [{
+                    height: 45,
+                    url: "c1.jpg",
+                    width: 45
+                },
+                {
+                    height: 55,
+                    url: "c2.jpg",
+                    width: 55
+                },
+                {
+                    height: 65,
+                    url: "c3.jpg",
+                    width: 65
+                },
+                {
+                    height: 75,
+                    url: "c4.jpg",
+                    width: 75
+                },
+                {
+                    height: 85,
+                    url: "c5.jpg",
+                    width: 85
+                }]};
+    
+    
     var mapCanvas = document.getElementById('map');
     var mapOptions = {
       center: new google.maps.LatLng(13, 121),
@@ -46,7 +73,9 @@ function initMap() {
 
     var input = document.getElementById('pac-input');
     var searchBox = new google.maps.places.SearchBox(input);
-    
+
+    var markerclusterer;
+    var markers = [];
 
     map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
     
@@ -140,11 +169,28 @@ function initMap() {
                 infowindow.open(map,marker);
                 marker.setAnimation(google.maps.Animation.BOUNCE);   
             })
+            google.maps.event.addListener(marker, 'dragend', function(event){
+                chlocation = event.latLng;
+                var content =   '<%=form_tag '/make', method:'post' do %>'+
+                                '<p>Do You Really Want To Change the position?</p>'+
+                                '<input type="hidden" name="latitude" value='+
+                                chlocation.lat()+
+                                '><input type="hidden" name="longitude" value='+
+                                chlocation.lng()+
+                                '>'+
+                                '<input type="hidden" name="btntype" value='+
+                                temp+
+                                '>'+
+                                '<input type="submit" value="네!!"><% end %>';
+                infowindow2 = new google.maps.InfoWindow({
+                    content: content
+                });
+                infowindow2.open(map, marker);
+            })
         })(marker);
-
+        markers.push(marker);
     <% end %>
-    
-    var markarray = [];  
+    markerclusterer = new MarkerClusterer(map, markers, mcOptions);
     google.maps.event.addListener(map, 'rightclick', function(event) {
         if(temp == 1){
             var images = 'image.png';
@@ -190,11 +236,9 @@ function initMap() {
         google.maps.event.addListener(infowindow, 'closeclick', function(){
             mark.setMap(null);
         });
-        markarray.push(mark);
-        
+        infowindow.open(map, mark);
     });
-    //var mcOption = {girdSize: 50, maxZoom: 15};
-    var markerCluster = new MarkerClusterer(map, markerarray);
+
 
 
 }
@@ -202,6 +246,3 @@ function initMap() {
 </script>
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2xWsRsM--vAOE_I9dv-ljLh-nO6IU0pU&signed_in=false&libraries=places&callback=initMap"></script>
-<script type="text/javascript" src="markerclusterer.js"></script>
-<script type="text/javascript" src="jquery.1.4.2.js"></script>
-<script type="text/javascript" src="jsDatePick.jquery.min.1.3.js"></script> 
