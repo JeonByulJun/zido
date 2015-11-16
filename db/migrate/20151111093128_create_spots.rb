@@ -7,7 +7,7 @@ class CreateSpots < ActiveRecord::Migration
       t.string :title # displayed as an summary in map
       t.string :content # details, doesn't displayed in map
       t.datetime :shigan # the time when the spot writed yyyy-mm-dd hh:mm:ss
-
+      t.integer :button
       t.timestamps null: false
     end
   end

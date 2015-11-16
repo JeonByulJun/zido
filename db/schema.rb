@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 20151111093128) do
     t.string   "title"
     t.string   "content"
     t.datetime "shigan"
+    t.integer  "button"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
