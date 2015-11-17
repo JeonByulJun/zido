@@ -24,7 +24,7 @@
 </div>
 <div id="sidebar">
     <% @memos.each_with_index do |p ,i| %>
-        <%=p.shigan%>.<br>title: <%=p.title%><br>
+        <%=p.updated_at%>.<br>title: <%=p.title%><br>
         content: <%=p.content%><br>
         ============================================================<br>
     <% end %>
