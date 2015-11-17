@@ -134,6 +134,8 @@ function initMap() {
         }
         marker = new google.maps.Marker({
             map: map,
+            label: "<%=p.title%>",
+            title: "<%=p.title%>",
             icon: images,
             position: {lat: <%=p.lat%>, lng: <%=p.lng%>},
             animation: google.maps.Animation.DROP,
