@@ -181,6 +181,8 @@ function initMap() {
                                 '<input type="hidden" name="btntype" value='+
                                 temp+
                                 '>'+
+
+                                '</div>'+
                                 '<input type="submit" value="네!!"><% end %>';
                 infowindow2 = new google.maps.InfoWindow({
                     content: content
@@ -212,6 +214,7 @@ function initMap() {
 
         var contentString = '<div id="infobox">'+
                             '<div class="title">MY TRIP</div>'+
+                            '<div class="input-group date" id="datetimepicker1" name="calendar">'+
                             '<%=form_tag '/make', method:'post' do %><ul><textarea name="tit" class="form-control" row="1"></textarea></ul><ul><textarea name="con" class="form-control" row="4"></textarea></ul>'+
                             '<input type="hidden" name="time" value=<%=Time.now%>>'+
                             '<input type="hidden" name="latitude" value='+
@@ -222,6 +225,7 @@ function initMap() {
                             '<input type="hidden" name="btntype" value='+
                             temp+
                             '>'+
+                            '<input type="text" class="form-control" />'+
                             '<input type="submit"><% end %>'+
                             '</div>';
 
@@ -235,8 +239,25 @@ function initMap() {
         });
         google.maps.event.addListener(infowindow, 'closeclick', function(){
             mark.setMap(null);
+            
         });
+
         infowindow.open(map, mark);
+        google.maps.event.addListener(infowindow, 'domready', function(){
+           var checkin = $('#datetimepicker1').datepicker({
+              onRender: function(date) {
+                return date.valueOf() < now.valueOf() ? 'disabled' : '';
+              }
+            }).on('changeDate', function(ev) {
+              if (ev.date.valueOf() > checkout.date.valueOf()) {
+                var newDate = new Date(ev.date)
+                newDate.setDate(newDate.getDate() + 1);
+                checkout.setValue(newDate);
+              }
+              checkin.hide();
+              $('#dpd2')[0].focus();
+            }).data('datepicker');
+        });
     });
 
 
@@ -244,5 +265,7 @@ function initMap() {
 }
 
 </script>
+
+
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2xWsRsM--vAOE_I9dv-ljLh-nO6IU0pU&signed_in=false&libraries=places&callback=initMap"></script>
