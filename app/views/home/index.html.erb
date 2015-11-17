@@ -1,12 +1,17 @@
-<ul>
-    <button href="#"> <%= current_user.email %> </button>
-</ul>
-<ul>
+<div id="container">
+      <div id="header">
+        <ul>
+            <button href="#"> <%= current_user.email %> </button>
+        </ul>
+    <ul>
     <a href="/users/sign_out" data-method="delete"> Sign Out </a>
-</ul>
-
-<input id="pac-input" class="controls" type="text" placeholder="Search Box">
+    </ul>
+</div>
+</div>
+<div id="content">
 <div id="map"></div>
+    <input id="pac-input" class="controls" type="text" placeholder="Search Box">
+
 
 <p>아이콘 선택</p>
     <form name="tempset">
@@ -15,6 +20,15 @@
     <input type="radio" name="type" onclick="handleClick(this);" value="3">
 </form>
 <div id="formcontent"></div>
+
+</div>
+<div id="sidebar">
+    <% @memos.each_with_index do |p ,i| %>
+        <%=p.updated_at%>.<br>title: <%=p.title%><br>
+        content: <%=p.content%><br>
+        ============================================================<br>
+    <% end %>
+</div>
 <div id="footer">
 <adress>
     © 
@@ -134,6 +148,8 @@ function initMap() {
         }
         marker = new google.maps.Marker({
             map: map,
+            label: "<%=p.title%>",
+            title: "<%=p.title%>",
             icon: images,
             position: {lat: <%=p.lat%>, lng: <%=p.lng%>},
             animation: google.maps.Animation.DROP,
@@ -269,3 +285,4 @@ function initMap() {
 
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2xWsRsM--vAOE_I9dv-ljLh-nO6IU0pU&signed_in=false&libraries=places&callback=initMap"></script>
+
