@@ -145,8 +145,8 @@ function initMap() {
 
             var tt = "<%=p.title%>"
             var tc = "<%=p.content%>"
-            var ttr = tt.replace(/&lt;br&gt;/g,"\n")
-            var tcr = tc.replace(/&lt;br&gt;/g,"\n")
+            var ttr = tt.replace(/&lt;br&gt;/g,"\r\n")
+            var tcr = tc.replace(/&lt;br&gt;/g,"\r\n")
             var contentString2 = 
             '<div id="infowindow">'+
             '<p class="temp">Title:</p>'+
