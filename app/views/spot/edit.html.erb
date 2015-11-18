@@ -1,0 +1,110 @@
+<h1>Edit Page</h1>
+
+<div id="map"></div>
+
+<script>
+var titleedit ="ud";
+var contentedit = "ud";
+function detection1(val){
+    titleedit = val;
+}
+function detection2(val){
+    contentedit = val;
+}
+
+function initMap() {
+    var mapCanvas = document.getElementById('map');
+    var mapOptions = {
+      center: new google.maps.LatLng(<%=@temp.lat%>, <%=@temp.lng%>),
+      zoom: 4,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    var map = new google.maps.Map(mapCanvas, mapOptions);
+    if(<%=@temp.button%> == 1){
+        var images = 'image.png';
+    }
+    else if(<%=@temp.button%> == 2){
+        var images = 'images2.jpg';
+    }
+    else{
+        var images = 'images3.jpg';
+    }
+    marker = new google.maps.Marker({
+        map: map,
+        icon: images,
+        position: {lat: <%=@temp.lat%>, lng: <%=@temp.lng%>},
+        animation: google.maps.Animation.DROP,
+        draggable: true
+    });
+    (function(marker){
+        var titletemp = "<%=@temp.title%>";
+        var contenttemp = "<%=@temp.content%>";
+        var lat = <%=@temp.lat%>;
+        var lng = <%=@temp.lng%>;
+        var contentString = '<div id="infobox">'+
+                            '<%=form_tag '/update', method:'post' do %><div class="form-group"><label for="comment">Title:</label><textarea name="tit" class="form-control" row="1"><%=@temp.title%></textarea></div><div class="form-group"><label for="comment">Content:</label><textarea name="con" class="form-control" row="4"><%=@temp.content%></textarea></div>'+
+                            '<input type="hidden" name="id" value='+
+                            '<%=@temp.id%>'+
+                            '>'+
+                            '<input type="hidden" name="latitude" value='+
+                            <%=@temp.lat%>+
+                            '><input type="hidden" name="longitude" value='+
+                            <%=@temp.lng%>+
+                            '>'+
+                            '<input type="hidden" name="btntype" value='+
+                            <%=@temp.button%>+
+                            '>'+
+                            '<input type="submit" value="Edit!" class="btn btn-success"><%end%>'+
+                            '<p>'+
+                            lat+
+                            '<br>'+
+                            lng+
+                            '</p>'+
+                            '</div>';
+        infowindow = new google.maps.InfoWindow({
+            content: contentString
+        });
+            infowindow.open(map, marker);
+        google.maps.event.addListener(marker, 'dragend', function(event){
+            if(titleedit == "ud"){
+                titleedit = "<%=@temp.title%>";
+            }
+            if(contentedit == "ud"){
+                contentedit = "<%=@temp.content%>";
+            }
+            var temps = '<div id="infobox">'+
+                    '<%=form_tag '/update', method:'post' do %><div class="form-group"><label for="comment">Title:</label><textarea name="tit" class="form-control" row="1" onchange="detection1(this.value)">'+
+                    titleedit+
+                    '</textarea></div><div class="form-group"><label for="comment">Content:</label><textarea name="con" class="form-control" row="4" onchange="detection2(this.value)">'+
+                    contentedit+
+                    '</textarea></div>'+
+                    '<input type="hidden" name="id" value='+
+                    '<%=@temp.id%>'+
+                    '>'+
+                    '<input type="hidden" name="latitude" value='+
+                    event.latLng.lat()+
+                    '><input type="hidden" name="longitude" value='+
+                    event.latLng.lng()+
+                    '>'+
+                    '<input type="hidden" name="btntype" value='+
+                    <%=@temp.button%>+
+                    '>'+
+                    '<input type="submit" value="Edit!" class=" btn btn-success"><%end%>'+
+                    '<p>'+
+                    event.latLng.lat()+
+                    '<br>'+
+                    event.latLng.lng()+
+                    '</p>'+
+                    '</div>';    
+            //var ipt = temps.lat() + '<br>' + temps.lng();
+            infowindow.setContent(temps);
+            infowindow.open(map, marker, temps);
+        })
+        google.maps.event.addListener(infowindow, 'closeclick', function(){
+            location.href='/';
+        })
+    })(marker);
+}
+
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2xWsRsM--vAOE_I9dv-ljLh-nO6IU0pU&signed_in=false&libraries=places&callback=initMap"></script>

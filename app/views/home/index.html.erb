@@ -1,34 +1,16 @@
-<div id="container">
-      <div id="header">
-        <ul>
-            <button href="#"> <%= current_user.email %> </button>
-        </ul>
-    <ul>
+<ul>
+    <button href="#"> <%= current_user.email %> </button>
+</ul>
+<ul>
     <a href="/users/sign_out" data-method="delete"> Sign Out </a>
-    </ul>
-</div>
-</div>
-<div id="content">
+</ul>
+
+<input id="pac-input" class="controls" type="text" placeholder="Search Box">
 <div id="map"></div>
-    <input id="pac-input" class="controls" type="text" placeholder="Search Box">
 
 
-<p>아이콘 선택</p>
-    <form name="tempset">
-    <input type="radio" name="type" onclick="handleClick(this);" value="1">
-    <input type="radio" name="type" onclick="handleClick(this);" value="2">
-    <input type="radio" name="type" onclick="handleClick(this);" value="3">
-</form>
+
 <div id="formcontent"></div>
-
-</div>
-<div id="sidebar">
-    <% @memos.each_with_index do |p ,i| %>
-        <%=p.updated_at%>.<br>title: <%=p.title%><br>
-        content: <%=p.content%><br>
-        ============================================================<br>
-    <% end %>
-</div>
 <div id="footer">
 <adress>
     © 
@@ -43,6 +25,9 @@
 var temp = 1;
 function handleClick(type){
     temp = type.value;
+}
+function abling(){
+    document.getElementById('sum').disabled = false;
 }
 
 // This example displays a marker at the center of Australia.
@@ -148,32 +133,36 @@ function initMap() {
         }
         marker = new google.maps.Marker({
             map: map,
-            label: "<%=p.title%>",
-            title: "<%=p.title%>",
             icon: images,
             position: {lat: <%=p.lat%>, lng: <%=p.lng%>},
             animation: google.maps.Animation.DROP,
-            draggable: true
         });
         
 
 
 
         (function(marker){
-            var titletemp = "<%=p.title%>";
-            var contenttemp = "<%=p.content%>";
+
             
             var contentString2 = 
-            '<p>'+
-            'title:'+
-             titletemp +
-            'content:'+
-            contenttemp +
-            '</p>'+
+            '<div id="infowindow">'+
+            '<p class="temp">Title:</p>'+
+            '<div id="wrapper" class="container">'+
+             '<%=p.title%>' +
+             '</div>'+
+            '<p class="temp">Content:</p>'+
+            '<div id="wrapper" class="container">'+
+            '<%=p.content%>' +
+            '</div>'+
             '<%=form_tag '/delete', method:'post' do %>'+
             '<input type="hidden" name="id" value='+
             '<%=p.id%>'+
-            '><input type="submit" value="아 제발 얼굴좀 지워"><% end %>';
+            '><input type="submit" value="Delete!" class="btn btn-success"><% end %>'+
+            '<%=form_tag '/edit', method:'post' do%>'+
+            '<input type="hidden" name="id" value='+
+            '<%=p.id%>'+
+            '><input type="submit" value="Edit!" class="btn btn-success"><%end%>'+
+            '</div>';
             
             var infowindow = new google.maps.InfoWindow({
                 content: contentString2
@@ -185,31 +174,20 @@ function initMap() {
                 infowindow.open(map,marker);
                 marker.setAnimation(google.maps.Animation.BOUNCE);   
             })
-            google.maps.event.addListener(marker, 'dragend', function(event){
-                chlocation = event.latLng;
-                var content =   '<%=form_tag '/make', method:'post' do %>'+
-                                '<p>Do You Really Want To Change the position?</p>'+
-                                '<input type="hidden" name="latitude" value='+
-                                chlocation.lat()+
-                                '><input type="hidden" name="longitude" value='+
-                                chlocation.lng()+
-                                '>'+
-                                '<input type="hidden" name="btntype" value='+
-                                temp+
-                                '>'+
 
-                                '</div>'+
-                                '<input type="submit" value="네!!"><% end %>';
-                infowindow2 = new google.maps.InfoWindow({
-                    content: content
-                });
-                infowindow2.open(map, marker);
-            })
+
         })(marker);
         markers.push(marker);
     <% end %>
     markerclusterer = new MarkerClusterer(map, markers, mcOptions);
+    var infowindowot = new google.maps.InfoWindow({});
+    var markertemp = [];
     google.maps.event.addListener(map, 'rightclick', function(event) {
+
+        for(var i=0; i<markertemp.length; i++){
+            markertemp[i].setMap(null);
+        }
+
         if(temp == 1){
             var images = 'image.png';
         }
@@ -223,57 +201,46 @@ function initMap() {
         startLocation = event.latLng;
         var mark = new google.maps.Marker({
           position: startLocation,
-          icon: images,
           map: map
         });
+        //mark.setIcon(images);
         mark.setAnimation(google.maps.Animation.BOUNCE);
 
         var contentString = '<div id="infobox">'+
-                            '<div class="title">MY TRIP</div>'+
-                            '<div class="input-group date" id="datetimepicker1" name="calendar">'+
-                            '<%=form_tag '/make', method:'post' do %><ul><textarea name="tit" class="form-control" row="1"></textarea></ul><ul><textarea name="con" class="form-control" row="4"></textarea></ul>'+
+                            '<div class="title"><h1>MY TRIP</h1></div>'+
+                            '<%=form_tag '/make', method:'post' do %><div class="form-group"><label for="comment">Title:</label><textarea name="tit" class="form-control" row="1"></textarea></div><div class="form-group"><label for="comment">Content:</label><textarea name="con" class="form-control" row="4"></textarea></div>'+
+                            '<div class="btn-group">'+
+                            
+                            '<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'+
+                            'Your Feeling <span class="caret"></span>'+
+                            '</button>'+
+                            '<ul class="dropdown-menu">'+
+                            '<li><input type="radio" name="btntype" value="1" onclick="abling()">Good</li>'+
+                            '<li><input type="radio" name="btntype" value="2" onclick="abling()">Soso</li>'+
+                            '<li><input type="radio" name="btntype" value="3" onclick="abling()">Bad</li>'+
+                            '</ul>'+
+                            '</div>'+
                             '<input type="hidden" name="time" value=<%=Time.now%>>'+
                             '<input type="hidden" name="latitude" value='+
                             startLocation.lat()+
                             '><input type="hidden" name="longitude" value='+
                             startLocation.lng()+
                             '>'+
-                            '<input type="hidden" name="btntype" value='+
-                            temp+
-                            '>'+
-                            '<input type="text" class="form-control" />'+
-                            '<input type="submit"><% end %>'+
-                            '</div>';
+                            '<br>'+
+                            '<input id="sum" type="submit" class="btn btn-success" disabled><% end %></div>';
+                            
 
-        var infowindow = new google.maps.InfoWindow({
-          content: contentString
-          
-        });
-        
-        mark.addListener('click', function(){
-          infowindow.open(map, mark);
-        });
-        google.maps.event.addListener(infowindow, 'closeclick', function(){
+
+        infowindowot.setContent(contentString);
+
+        google.maps.event.addListener(infowindowot, 'closeclick', function(){
             mark.setMap(null);
             
         });
 
-        infowindow.open(map, mark);
-        google.maps.event.addListener(infowindow, 'domready', function(){
-           var checkin = $('#datetimepicker1').datepicker({
-              onRender: function(date) {
-                return date.valueOf() < now.valueOf() ? 'disabled' : '';
-              }
-            }).on('changeDate', function(ev) {
-              if (ev.date.valueOf() > checkout.date.valueOf()) {
-                var newDate = new Date(ev.date)
-                newDate.setDate(newDate.getDate() + 1);
-                checkout.setValue(newDate);
-              }
-              checkin.hide();
-              $('#dpd2')[0].focus();
-            }).data('datepicker');
-        });
+        infowindowot.open(map, mark, contentString);
+        markertemp.push(mark);
+        
     });
 
 
@@ -285,4 +252,3 @@ function initMap() {
 
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2xWsRsM--vAOE_I9dv-ljLh-nO6IU0pU&signed_in=false&libraries=places&callback=initMap"></script>
-

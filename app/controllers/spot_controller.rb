@@ -8,4 +8,17 @@ class SpotController < ApplicationController
         a.destroy
         redirect_to :root
     end
+    def edit
+        @temp=Spot.find(params[:id])
+        
+    end
+    def update
+        pp = Spot.find(params[:id])
+        pp.title = params[:tit]
+        pp.content = params[:con]
+        pp.lat = params[:latitude]
+        pp.lng = params[:longitude]
+        pp.save
+        redirect_to :root
+    end
 end

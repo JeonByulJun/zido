@@ -3,6 +3,8 @@ Rails.application.routes.draw do
   root 'home#index'
   post '/make' => 'spot#create'
   post '/delete' => 'spot#delete'
+  post '/edit' => 'spot#edit'
+  post '/update' => 'spot#update'
 #<<<<<<<HEAD
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
