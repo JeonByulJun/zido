@@ -1,6 +1,10 @@
 class SpotController < ApplicationController
     def create
-        Spot.create(title: params[:tit], content: params[:con], shigan: params[:time], user_id: current_user.id, lat: params[:latitude], lng: params[:longitude], button: params[:btntype])
+        a = params[:tit].gsub "\n", "<br>"
+        b = a.gsub "\r", "<br>"
+        c = params[:tit].gsub "\n", "<br>"
+        d = c.gsub "\r", "<br>"        
+        Spot.create(title: b, content: d, shigan: params[:time], user_id: current_user.id, lat: params[:latitude], lng: params[:longitude], button: params[:btntype])
         redirect_to :root
     end
     def delete

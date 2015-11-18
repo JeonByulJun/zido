@@ -143,16 +143,19 @@ function initMap() {
 
         (function(marker){
 
-            
+            var tt = "<%=p.title%>"
+            var tc = "<%=p.content%>"
+            var ttr = tt.replace(/&lt;br&gt;/g,"\n")
+            var tcr = tc.replace(/&lt;br&gt;/g,"\n")
             var contentString2 = 
             '<div id="infowindow">'+
             '<p class="temp">Title:</p>'+
             '<div id="wrapper" class="container">'+
-             '<%=p.title%>' +
+            ttr +
              '</div>'+
             '<p class="temp">Content:</p>'+
             '<div id="wrapper" class="container">'+
-            '<%=p.content%>' +
+            tcr +
             '</div>'+
             '<%=form_tag '/delete', method:'post' do %>'+
             '<input type="hidden" name="id" value='+
