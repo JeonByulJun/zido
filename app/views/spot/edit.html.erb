@@ -39,15 +39,13 @@ function initMap() {
     (function(marker){
         var tt = "<%=@temp.title%>"
         var tc = "<%=@temp.content%>"
-        var ttr = tt.replace(/&lt;br&gt;/g,"\r\n")
-        var tcr = tc.replace(/&lt;br&gt;/g,"\r\n")
         var lat = <%=@temp.lat%>;
         var lng = <%=@temp.lng%>;
         var contentString = '<div id="infobox">'+
-                            '<%=form_tag '/update', method:'post' do %><div class="form-group"><label for="comment">Title:</label><textarea name="tit" class="form-control" row="1">'+
-                            ttr+
-                            '</textarea></div><div class="form-group"><label for="comment">Content:</label><textarea name="con" class="form-control" row="4">'+
-                            tcr+
+                            '<%=form_tag '/update', method:'post' do %><div class="form-group"><label for="comment">Title:</label><textarea name="tit" class="form-control" row="1" onchange="detection1(this.value)">'+
+                            tt+
+                            '</textarea></div><div class="form-group"><label for="comment">Content:</label><textarea name="con" class="form-control" row="4" onchange="detection2(this.value)">'+
+                            tc+
                             '</textarea></div>'+
                             '<input type="hidden" name="id" value='+
                             '<%=@temp.id%>'+
