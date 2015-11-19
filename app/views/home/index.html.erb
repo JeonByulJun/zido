@@ -1,16 +1,30 @@
-<ul>
-    <button href="#"> <%= current_user.email %> </button>
-</ul>
-<ul>
-    <a href="/users/sign_out" data-method="delete"> Sign Out </a>
-</ul>
+<div id="container">
+    <div id="header">
+        <ul>
+            <button href="#"> <%= current_user.email %> </button>
+        </ul>
+        <ul>
+            <a href="/users/sign_out" data-method="delete"> Sign Out </a>
+        </ul>
+    </div>
+</div>
 
-<input id="pac-input" class="controls" type="text" placeholder="Search Box">
-<div id="map"></div>
 
 
+<div id="content">
+    <input id="pac-input" class="controls" type="text" placeholder="Search Box">        
+    <div id="map"></div>
+</div>
+<div id="sidebar">
+    <% @memos.each_with_index do |p ,i| %>
+        <%=p.shigan%>.<br>title: <%=p.title%><br>
+        content: <%=p.content%><br>
+        ============================================================
+        <br>
+        
+    <% end %>
+</div>
 
-<div id="formcontent"></div>
 <div id="footer">
 <adress>
     © 
@@ -32,6 +46,7 @@ function abling(){
 
 // This example displays a marker at the center of Australia.
 // When the user clicks the marker, an info window opens.
+var mapCanvas = document.getElementById('map');
 
 function initMap() {
     
@@ -62,7 +77,7 @@ function initMap() {
                 }]};
     
     
-    var mapCanvas = document.getElementById('map');
+
     var mapOptions = {
       center: new google.maps.LatLng(13, 121),
       zoom: 4,
