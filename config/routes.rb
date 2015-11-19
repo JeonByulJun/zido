@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   devise_for :users
   root 'home#index'
+  get '/goto' => 'home#index'
+  post '/goto' => 'home#index'
   post '/make' => 'spot#create'
   post '/delete' => 'spot#delete'
   post '/edit' => 'spot#edit'

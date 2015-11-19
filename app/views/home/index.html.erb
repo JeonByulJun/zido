@@ -19,9 +19,22 @@
     <% @memos.each_with_index do |p ,i| %>
         <%=p.shigan%>.<br>title: <%=p.title%><br>
         content: <%=p.content%><br>
+        
+        <%=form_tag '/goto', method:'post' do %>
+            <input type="hidden" name="latitude" value=<%=p.lat%>>
+            <input type="hidden" name="longitude" value=<%=p.lng%>>
+            <input type="submit" value="이곳으로 가기">
+        <% end %>
         ============================================================
         <br>
-        
+        <script>
+            var lat=<%=@lat%>;
+            var lng=<%=@lng%>;
+            if (lat==37 && lng==127){
+                lat=<%=@memos.last.lat%>;
+                lng=<%=@memos.last.lng%>;
+            }            
+        </script>
     <% end %>
 </div>
 
@@ -79,7 +92,7 @@ function initMap() {
     
 
     var mapOptions = {
-      center: new google.maps.LatLng(13, 121),
+      center: new google.maps.LatLng(lat, lng),
       zoom: 4,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
