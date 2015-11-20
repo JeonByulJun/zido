@@ -8,6 +8,7 @@ class CreateSpots < ActiveRecord::Migration
       t.string :content # details, doesn't displayed in map
       t.datetime :shigan # the time when the spot writed yyyy-mm-dd hh:mm:ss
       t.integer :button
+      t.string :my_image
       t.timestamps null: false
     end
   end

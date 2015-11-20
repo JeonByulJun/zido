@@ -1,0 +1,75 @@
+<h1>Show Page</h1>
+
+<a href = "/">Get Back To Main Page</a>
+
+<div id="map"></div>
+<div id="sidebar">
+    <script>
+        var lat=37;
+        var lng=127;
+    </script>
+    <% @marker.each do |p| %>
+        <%=p.shigan%>.<br>title: <%=p.title%><br>
+        content: <%=p.content%><br>
+        
+        <%=form_tag '/showgoto', method:'get' do %>
+            <input type="hidden" name="latitude" value=<%=p.lat%>>
+            <input type="hidden" name="longitude" value=<%=p.lng%>>
+            <input type="hidden" name="btntype[]" value=<%=@temp[0]%>>
+            <input type="hidden" name="btntype[]" value=<%=@temp[1]%>>
+            <input type="hidden" name="btntype[]" value=<%=@temp[2]%>>
+            <input type="submit" value="이곳으로 가기">
+        <% end %>
+        ============================================================
+        <br>
+        <script>
+            var lat=<%=@lat%>;
+            var lng=<%=@lng%>;
+        </script>
+    <% end %>
+
+</div>
+<script>
+
+function initMap() {
+    var mapCanvas = document.getElementById('map');
+    var mapOptions = {
+      center: new google.maps.LatLng(lat, lng),
+      zoom: 4,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    var map = new google.maps.Map(mapCanvas, mapOptions);
+    <%@marker.each do |p|%>
+        
+            if(<%=p.button%> == 1){
+                var images = 'image.png';
+            }
+            else if(<%=p.button%> == 2){
+                var images = 'images2.jpg';
+            }
+            else if(<%=p.button%> ==3){
+                var images = 'images3.jpg';
+            }
+            marker = new google.maps.Marker({
+                map: map,
+                icon: images,
+                position: {lat: <%=p.lat%>, lng: <%=p.lng%>},
+                animation: google.maps.Animation.DROP
+            });
+            
+            (function(marker){
+                var tt = "<%=p.title%>"
+                var tc = "<%=p.content%>"
+                var ttr = tt.replace(/&lt;br&gt;/g,"\r\n")
+                var tcr = tc.replace(/&lt;br&gt;/g,"\r\n")
+                var contentString = "<%=p.lat%>"
+                infowindow = new google.maps.InfoWindow({
+                    content: contentString
+                });
+                
+            })(marker);
+            
+    <% end %>
+}
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2xWsRsM--vAOE_I9dv-ljLh-nO6IU0pU&signed_in=false&libraries=places&callback=initMap"></script>

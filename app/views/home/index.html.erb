@@ -9,13 +9,22 @@
     </div>
 </div>
 
-
+<form name="checkboxForm" id="checkboxForm" action= '/show' method = 'get'>
+    <input id="1cb" type="checkbox" name="btntype[]" value=1 onclick="cbcheck()">good<br>
+    <input id="2cb" type="checkbox" name="btntype[]" value=2 onclick="cbcheck()">soso<br>
+    <input id="3cb" type="checkbox" name="btntype[]" value=3 onclick="cbcheck()">bad<br> 
+    <input id="btnselect" type="submit" value="What You Want to See" class="btn btn-success" disabled>
+</form>
 
 <div id="content">
     <input id="pac-input" class="controls" type="text" placeholder="Search Box">        
     <div id="map"></div>
 </div>
 <div id="sidebar">
+    <script>
+        var lat=37;
+        var lng=127;
+    </script>
     <% @memos.each_with_index do |p ,i| %>
         <%=p.shigan%>.<br>title: <%=p.title%><br>
         content: <%=p.content%><br>
@@ -36,6 +45,7 @@
             }            
         </script>
     <% end %>
+
 </div>
 
 <div id="footer">
@@ -48,6 +58,19 @@
 </div>
 
 <script>
+function cbcheck(){
+    for(var i=1; i<4; i++){
+        var temp = i+"cb"
+        if(document.getElementById(temp).checked){
+            document.getElementById("btnselect").disabled = false;
+        
+            return;
+        }
+        
+    }
+    document.getElementById("btnselect").disabled = true;
+    
+}
 
 var temp = 1;
 function handleClick(type){
@@ -184,6 +207,7 @@ function initMap() {
             '<p class="temp">Content:</p>'+
             '<div id="wrapper" class="container">'+
             tcr +
+            '<img src="<%=p.my_image.url%>" width="40px" height="40px">'+
             '</div>'+
             '<%=form_tag '/delete', method:'post' do %>'+
             '<input type="hidden" name="id" value='+
@@ -239,7 +263,7 @@ function initMap() {
 
         var contentString = '<div id="infobox">'+
                             '<div class="title"><h1>MY TRIP</h1></div>'+
-                            '<%=form_tag '/make', method:'post' do %><div class="form-group"><label for="comment">Title:</label><textarea name="tit" class="form-control" row="1"></textarea></div><div class="form-group"><label for="comment">Content:</label><textarea name="con" class="form-control" row="4"></textarea></div>'+
+                            '<%=form_tag '/make', method:'post', enctype:'multipart/form-data' do %><div class="form-group"><label for="comment">Title:</label><textarea name="tit" class="form-control" row="1"></textarea></div><div class="form-group"><label for="comment">Content:</label><textarea name="con" class="form-control" row="4"></textarea></div>'+
                             '<div class="btn-group">'+
                             
                             '<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'+
@@ -251,6 +275,7 @@ function initMap() {
                             '<li><input type="radio" name="btntype" value="3" onclick="abling()">Bad</li>'+
                             '</ul>'+
                             '</div>'+
+                            '<input type="file" name="image_file">'+
                             '<input type="hidden" name="time" value=<%=Time.now%>>'+
                             '<input type="hidden" name="latitude" value='+
                             startLocation.lat()+

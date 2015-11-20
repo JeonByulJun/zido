@@ -68,7 +68,7 @@ function initMap() {
         infowindow = new google.maps.InfoWindow({
             content: contentString
         });
-            infowindow.open(map, marker);
+        infowindow.open(map, marker);
         google.maps.event.addListener(marker, 'dragend', function(event){
             if(titleedit == "ud"){
                 titleedit = "<%=@temp.title%>";
@@ -100,7 +100,7 @@ function initMap() {
                     event.latLng.lng()+
                     '</p>'+
                     '</div>';    
-            //var ipt = temps.lat() + '<br>' + temps.lng();
+           
             infowindow.setContent(temps);
             infowindow.open(map, marker, temps);
         })

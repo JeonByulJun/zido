@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   post '/delete' => 'spot#delete'
   post '/edit' => 'spot#edit'
   post '/update' => 'spot#update'
+  get '/show' => 'home#show'
+  get '/showgoto' => 'home#show'
 #<<<<<<<HEAD
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
