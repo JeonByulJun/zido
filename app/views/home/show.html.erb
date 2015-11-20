@@ -53,7 +53,7 @@
         var lat=37;
         var lng=127;
     </script>
-    <% if @marker %>
+    <% if @marker[0] != nil %>
         <script>
             var lat=<%=@lat%>;
             var lng=<%=@lng%>;
