@@ -9,6 +9,52 @@
     </div>
 </div>
 
+
+<div class="col-sm-4 portfolio-item">
+    <a href="#portfolioModal1" class="portfolio-link" data-toggle="modal">
+        <div class="caption">
+            <div class="caption-content">
+                <i class="fa fa-search-plus fa-3x"></i>
+            </div>
+        </div>
+        <p>See Your Timeline</p>
+        
+    </a>
+</div>
+
+<div class="portfolio-modal modal fade" id="portfolioModal1" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-content">
+        <div class="close-modal" data-dismiss="modal">
+
+        </div>
+
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="modal-body">
+                            <% @memos.each_with_index do |p ,i| %>
+                                <%=p.shigan%>.<br>title: <%=p.title%><br>
+                                content: <%=p.content%>
+                                <img src="<%=p.my_image.url%>" width="80px" height="80px"%>
+                                <br>
+                                
+                                <%=form_tag '/goto', method:'post' do %>
+                                    <input type="hidden" name="latitude" value=<%=p.lat%>>
+                                    <input type="hidden" name="longitude" value=<%=p.lng%>>
+                                    <input type="submit" value="이곳으로 가기">
+                                <% end %>
+                                ============================================================
+                                <br>
+                            <% end %>
+                        <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                    </div>
+                </div>
+            </div>
+
+    </div>
+</div>
+<br>
+<br>
+
 <form name="checkboxForm" id="checkboxForm" action= '/show' method = 'get'>
     <input id="1cb" type="checkbox" name="btntype[]" value=1 onclick="cbcheck()">good<br>
     <input id="2cb" type="checkbox" name="btntype[]" value=2 onclick="cbcheck()">soso<br>
@@ -25,17 +71,8 @@
         var lat=37;
         var lng=127;
     </script>
-    <% @memos.each_with_index do |p ,i| %>
-        <%=p.shigan%>.<br>title: <%=p.title%><br>
-        content: <%=p.content%><br>
-        
-        <%=form_tag '/goto', method:'post' do %>
-            <input type="hidden" name="latitude" value=<%=p.lat%>>
-            <input type="hidden" name="longitude" value=<%=p.lng%>>
-            <input type="submit" value="이곳으로 가기">
-        <% end %>
-        ============================================================
-        <br>
+    <% if @memos %>
+
         <script>
             var lat=<%=@lat%>;
             var lng=<%=@lng%>;
@@ -198,7 +235,10 @@ function initMap() {
             var tc = "<%=p.content%>"
             var ttr = tt.replace(/&lt;br&gt;/g,"\r\n")
             var tcr = tc.replace(/&lt;br&gt;/g,"\r\n")
+            var temp;
+
             var contentString2 = 
+            '<img src="<%=p.my_image.url%>" >'+
             '<div id="infowindow">'+
             '<p class="temp">Title:</p>'+
             '<div id="wrapper" class="container">'+
@@ -207,7 +247,7 @@ function initMap() {
             '<p class="temp">Content:</p>'+
             '<div id="wrapper" class="container">'+
             tcr +
-            '<img src="<%=p.my_image.url%>" width="40px" height="40px">'+
+
             '</div>'+
             '<%=form_tag '/delete', method:'post' do %>'+
             '<input type="hidden" name="id" value='+

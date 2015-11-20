@@ -1,6 +1,51 @@
 <h1>Show Page</h1>
 
 <a href = "/">Get Back To Main Page</a>
+<div class="col-sm-4 portfolio-item">
+    <a href="#portfolioModal1" class="portfolio-link" data-toggle="modal">
+        <div class="caption">
+            <div class="caption-content">
+                <i class="fa fa-search-plus fa-3x"></i>
+            </div>
+        </div>
+        <p>See Your Timeline</p>
+        
+    </a>
+</div>
+
+<div class="portfolio-modal modal fade" id="portfolioModal1" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-content">
+        <div class="close-modal" data-dismiss="modal">
+
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2">
+                    <div class="modal-body">
+                            <% @marker.each do |p| %>
+                                <%=p.shigan%>.<br>title: <%=p.title%><br>
+                                content: <%=p.content%><br>
+                                
+                                <%=form_tag '/showgoto', method:'get' do %>
+                                    <input type="hidden" name="latitude" value=<%=p.lat%>>
+                                    <input type="hidden" name="longitude" value=<%=p.lng%>>
+                                    <input type="hidden" name="btntype[]" value=<%=@temp[0]%>>
+                                    <input type="hidden" name="btntype[]" value=<%=@temp[1]%>>
+                                    <input type="hidden" name="btntype[]" value=<%=@temp[2]%>>
+                                    <input type="submit" value="이곳으로 가기">
+                                <% end %>
+                                ============================================================
+                                <br>
+                            <% end %>
+                        <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<br>
 
 <div id="map"></div>
 <div id="sidebar">
@@ -8,20 +53,7 @@
         var lat=37;
         var lng=127;
     </script>
-    <% @marker.each do |p| %>
-        <%=p.shigan%>.<br>title: <%=p.title%><br>
-        content: <%=p.content%><br>
-        
-        <%=form_tag '/showgoto', method:'get' do %>
-            <input type="hidden" name="latitude" value=<%=p.lat%>>
-            <input type="hidden" name="longitude" value=<%=p.lng%>>
-            <input type="hidden" name="btntype[]" value=<%=@temp[0]%>>
-            <input type="hidden" name="btntype[]" value=<%=@temp[1]%>>
-            <input type="hidden" name="btntype[]" value=<%=@temp[2]%>>
-            <input type="submit" value="이곳으로 가기">
-        <% end %>
-        ============================================================
-        <br>
+    <% if @marker %>
         <script>
             var lat=<%=@lat%>;
             var lng=<%=@lng%>;
@@ -32,6 +64,34 @@
 <script>
 
 function initMap() {
+    mcOptions = {styles: [{
+                    height: 45,
+                    url: "c1.jpg",
+                    width: 45
+                },
+                {
+                    height: 55,
+                    url: "c2.jpg",
+                    width: 55
+                },
+                {
+                    height: 65,
+                    url: "c3.jpg",
+                    width: 65
+                },
+                {
+                    height: 75,
+                    url: "c4.jpg",
+                    width: 75
+                },
+                {
+                    height: 85,
+                    url: "c5.jpg",
+                    width: 85
+                }]};
+    var markers = [];
+    var markerclusterer;
+
     var mapCanvas = document.getElementById('map');
     var mapOptions = {
       center: new google.maps.LatLng(lat, lng),
@@ -39,37 +99,72 @@ function initMap() {
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
     var map = new google.maps.Map(mapCanvas, mapOptions);
-    <%@marker.each do |p|%>
+    <% @marker.each_with_index do |p ,i| %>
+        if(<%=p.button%> == 1){
+            var images = 'image.png';
+        }
+        else if(<%=p.button%> == 2){
+            var images = 'images2.jpg';
+        }
+        else{
+            var images = 'images3.jpg';
+        }
+        marker = new google.maps.Marker({
+            map: map,
+            icon: images,
+            position: {lat: <%=p.lat%>, lng: <%=p.lng%>},
+            animation: google.maps.Animation.DROP,
+        });
         
-            if(<%=p.button%> == 1){
-                var images = 'image.png';
-            }
-            else if(<%=p.button%> == 2){
-                var images = 'images2.jpg';
-            }
-            else if(<%=p.button%> ==3){
-                var images = 'images3.jpg';
-            }
-            marker = new google.maps.Marker({
-                map: map,
-                icon: images,
-                position: {lat: <%=p.lat%>, lng: <%=p.lng%>},
-                animation: google.maps.Animation.DROP
+
+
+
+        (function(marker){
+
+            var tt = "<%=p.title%>"
+            var tc = "<%=p.content%>"
+            var ttr = tt.replace(/&lt;br&gt;/g,"\r\n")
+            var tcr = tc.replace(/&lt;br&gt;/g,"\r\n")
+            var temp;
+
+            var contentString2 = 
+            '<img src="<%=p.my_image.url%>" >'+
+            '<div id="infowindow">'+
+            '<p class="temp">Title:</p>'+
+            '<div id="wrapper" class="container">'+
+            ttr +
+             '</div>'+
+            '<p class="temp">Content:</p>'+
+            '<div id="wrapper" class="container">'+
+            tcr +
+
+            '</div>'+
+            '<%=form_tag '/delete', method:'post' do %>'+
+            '<input type="hidden" name="id" value='+
+            '<%=p.id%>'+
+            '><input type="submit" value="Delete!" class="btn btn-success"><% end %>'+
+            '<%=form_tag '/edit', method:'post' do%>'+
+            '<input type="hidden" name="id" value='+
+            '<%=p.id%>'+
+            '><input type="submit" value="Edit!" class="btn btn-success"><%end%>'+
+            '</div>';
+            
+            var infowindow = new google.maps.InfoWindow({
+                content: contentString2
             });
-            
-            (function(marker){
-                var tt = "<%=p.title%>"
-                var tc = "<%=p.content%>"
-                var ttr = tt.replace(/&lt;br&gt;/g,"\r\n")
-                var tcr = tc.replace(/&lt;br&gt;/g,"\r\n")
-                var contentString = "<%=p.lat%>"
-                infowindow = new google.maps.InfoWindow({
-                    content: contentString
-                });
-                
-            })(marker);
-            
+            google.maps.event.addListener(infowindow, 'closeclick', function(){
+                marker.setAnimation(null);
+            });
+            google.maps.event.addListener(marker, 'click', function(){
+                infowindow.open(map,marker);
+                marker.setAnimation(google.maps.Animation.BOUNCE);   
+            })
+
+
+        })(marker);
+        markers.push(marker);
     <% end %>
+    markerclusterer = new MarkerClusterer(map, markers, mcOptions);
 }
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2xWsRsM--vAOE_I9dv-ljLh-nO6IU0pU&signed_in=false&libraries=places&callback=initMap"></script>
