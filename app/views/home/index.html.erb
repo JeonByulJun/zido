@@ -34,7 +34,7 @@
                             <% @memos.each_with_index do |p ,i| %>
                                 <%=p.shigan%>.<br>title: <%=p.title%><br>
                                 content: <%=p.content%>
-                                <img src="<%=p.my_image.url%>" width="80px" height="80px"%>
+                                <img src="<%=p.my_image.url%>" %>
                                 <br>
                                 
                                 <%=form_tag '/goto', method:'post' do %>
@@ -94,6 +94,48 @@
 </adress>
 </div>
 
+<!--infobubble style-->
+<style>
+    body {
+        font-size: 83%;
+    }
+    body, input, textarea {
+        font-family: arial, sans-serif;
+    }
+    #styles, #add-tab {
+        float: left;
+        margin-top: 10px;
+        width: 400px;
+    }
+    #styles label,
+    #add-tab label {
+        display: inline-block;
+        width: 130px;
+    }
+    .phoney {
+        background: -webkit-gradient(linear,left top,left bottom,color-stop(0, rgb(112,112,112)),color-stop(0.51, rgb(94,94,94)),color-stop(0.52, rgb(57,57,57)));
+        background: -moz-linear-gradient(center top,rgb(112,112,112) 0%,rgb(94,94,94) 51%,rgb(57,57,57) 52%);
+    }
+    .phoneytext {
+        text-shadow: 0 -1px 0 #000;
+        color: #fff;
+        font-family: Helvetica Neue, Helvetica, arial;
+        font-size: 16px;
+        line-height: 25px;
+        padding: 4px 45px 4px 15px;
+        font-weight: bold;
+        background: url(../images/arrow.png) 95% 50% no-repeat;
+    }
+    .phoneytab {
+        text-shadow: 0 -1px 0 #000;
+        color: #fff;
+        font-family: Helvetica Neue, Helvetica, arial;
+        font-size: 18px;
+        background: rgb(112,112,112) !important;
+    }
+</style>
+
+
 <script>
 function cbcheck(){
     for(var i=1; i<4; i++){
@@ -113,8 +155,9 @@ var temp = 1;
 function handleClick(type){
     temp = type.value;
 }
-function abling(){
+function abling(val){
     document.getElementById('sum').disabled = false;
+    document.getElementById('btnvalue').value = val;
 }
 
 // This example displays a marker at the center of Australia.
@@ -208,7 +251,7 @@ function initMap() {
         map.fitBounds(bounds);
     });
     
-
+    var infoBubbleArray = [];
     <% @memos.each_with_index do |p ,i| %>
         if(<%=p.button%> == 1){
             var images = 'image.png';
@@ -258,24 +301,27 @@ function initMap() {
             '<%=p.id%>'+
             '><input type="submit" value="Edit!" class="btn btn-success"><%end%>'+
             '</div>';
-            
-            var infowindow = new google.maps.InfoWindow({
-                content: contentString2
-            });
-            google.maps.event.addListener(infowindow, 'closeclick', function(){
+             
+            infoBubble = new InfoBubble({
+                maxWidth: 350
+            });   
+            infoBubble.addTab('your place', contentString2);
+            google.maps.event.addListener(infoBubble, 'closeclick', function(){
                 marker.setAnimation(null);
             });
+            infoBubbleArray.push(infoBubble);
+            var newinfoBubble = infoBubbleArray[<%=i%>];
             google.maps.event.addListener(marker, 'click', function(){
-                infowindow.open(map,marker);
+                newinfoBubble.open(map,marker);
                 marker.setAnimation(google.maps.Animation.BOUNCE);   
-            })
+            });
 
 
         })(marker);
         markers.push(marker);
     <% end %>
     markerclusterer = new MarkerClusterer(map, markers, mcOptions);
-    var infowindowot = new google.maps.InfoWindow({});
+    //var infowindowot = new google.maps.InfoWindow({});
     var markertemp = [];
     google.maps.event.addListener(map, 'rightclick', function(event) {
 
@@ -301,19 +347,16 @@ function initMap() {
         //mark.setIcon(images);
         mark.setAnimation(google.maps.Animation.BOUNCE);
 
+        var str = "";
+        for(var i=1; i<4; i++){
+            str += '<input type="radio" name="btnt" value="'+i+'" onclick="abling('+i+')">index'+i+'<br>'
+        }
         var contentString = '<div id="infobox">'+
                             '<div class="title"><h1>MY TRIP</h1></div>'+
                             '<%=form_tag '/make', method:'post', enctype:'multipart/form-data' do %><div class="form-group"><label for="comment">Title:</label><textarea name="tit" class="form-control" row="1"></textarea></div><div class="form-group"><label for="comment">Content:</label><textarea name="con" class="form-control" row="4"></textarea></div>'+
-                            '<div class="btn-group">'+
-                            
-                            '<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'+
-                            'Your Feeling <span class="caret"></span>'+
-                            '</button>'+
-                            '<ul class="dropdown-menu">'+
-                            '<li><input type="radio" name="btntype" value="1" onclick="abling()">Good</li>'+
-                            '<li><input type="radio" name="btntype" value="2" onclick="abling()">Soso</li>'+
-                            '<li><input type="radio" name="btntype" value="3" onclick="abling()">Bad</li>'+
-                            '</ul>'+
+                            '<div class="container">'+
+                              '<h6>Choose Feeling</h6>'+
+                              '<button type="button" class="btn btn-success" id="infob">Click me</button>'+
                             '</div>'+
                             '<input type="file" name="image_file">'+
                             '<input type="hidden" name="time" value=<%=Time.now%>>'+
@@ -322,23 +365,119 @@ function initMap() {
                             '><input type="hidden" name="longitude" value='+
                             startLocation.lng()+
                             '>'+
+                            '<input id="btnvalue" type="hidden" name="btntype", value="1">'+
                             '<br>'+
                             '<input id="sum" type="submit" class="btn btn-success" disabled><% end %></div>';
-                            
+        infoBubble1 = new InfoBubble({
+            maxWidth: 350,
+            minWidth: 350,
+            backgroundColor: 'rgb(200,255,255)',
+            borderColor: '#2c2c2c',
+            shadowStyle: 2
+        });                           
 
-
-        infowindowot.setContent(contentString);
-
-        google.maps.event.addListener(infowindowot, 'closeclick', function(){
-            mark.setMap(null);
-            
+        google.maps.event.addListener(infoBubble1, 'domready', function(){
+            $(document).ready(function(){
+                $('#infob').popover({title: "Choose Feeling", content: str,html: true, placement: "right"});  
+            }); 
         });
-
-        infowindowot.open(map, mark, contentString);
+        google.maps.event.addListener(infoBubble1, 'closeclick', function(){
+            mark.setMap(null);
+        });
+        
+        infoBubble1.addTab('add your place', contentString)
+        infoBubble1.open(map, mark);
+        //infoBubble2.open(map, mark);
         markertemp.push(mark);
+
         
     });
-
+    // infobubble function
+    
+    google.maps.event.addDomListener(document.getElementById('update'),
+        'click', updateStyles);
+    google.maps.event.addDomListener(document.getElementById('add'),
+        'click', addTab);
+    google.maps.event.addDomListener(document.getElementById('update-tab'),
+        'click', updateTab);
+    google.maps.event.addDomListener(document.getElementById('remove'),
+        'click', removeTab);
+    google.maps.event.addDomListener(document.getElementById('open'),
+        'click', function() {
+        infoBubble1.open();
+    });
+    google.maps.event.addDomListener(document.getElementById('close'),
+        'click', function() {
+        infoBubble1.close();
+    });
+    
+    google.maps.event.addDomListener(window, 'load', init);
+    
+    function updateStyles() {
+        var shadowStyle = document.getElementById('shadowstyle').value;
+        infoBubble.setShadowStyle(shadowStyle);
+        var padding = document.getElementById('padding').value;
+        infoBubble.setPadding(padding);
+        var borderRadius = document.getElementById('borderRadius').value;
+        infoBubble.setBorderRadius(borderRadius);
+        var borderWidth = document.getElementById('borderWidth').value;
+        infoBubble.setBorderWidth(borderWidth);
+        var borderColor = document.getElementById('borderColor').value;
+        infoBubble.setBorderColor(borderColor);
+        var backgroundColor = document.getElementById('backgroundColor').value;
+        infoBubble.setBackgroundColor(backgroundColor);
+        var maxWidth = document.getElementById('maxWidth').value;
+        infoBubble.setMaxWidth(maxWidth);
+        var maxHeight = document.getElementById('maxHeight').value;
+        infoBubble.setMaxHeight(maxHeight);
+        var minWidth = document.getElementById('minWidth').value;
+        infoBubble.setMinWidth(minWidth);
+        var minHeight = document.getElementById('minHeight').value;
+        infoBubble.setMinHeight(minHeight);
+        var arrowSize = document.getElementById('arrowSize').value;
+        infoBubble.setArrowSize(arrowSize);
+        var arrowPosition = document.getElementById('arrowPosition').value;
+        infoBubble.setArrowPosition(arrowPosition);
+        var arrowStyle = document.getElementById('arrowStyle').value;
+        infoBubble.setArrowStyle(arrowStyle);
+        var closeSrc = document.getElementById('closeSrc').value;
+        infoBubble.setCloseSrc(closeSrc);
+    }
+    function addTab() {
+        var title = document.getElementById('tab-title').value;
+        var content = document.getElementById('tab-content').value;
+        if (title !== '' && content !== '') {
+            infoBubble.addTab(title, content);
+        }
+    }
+    function updateTab() {
+        var index = document.getElementById('tab-index-update').value;
+        var title = document.getElementById('tab-title-update').value;
+        var content = document.getElementById('tab-content-update').value;
+        if (index) {
+            infoBubble.updateTab(index, title, content);
+        }
+    }
+    function removeTab() {
+        var index = document.getElementById('tab-index').value;
+        infoBubble.removeTab(index);
+    }
+    
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-12846745-20']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' === document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    
+    var script = '<script src="../src/infobubble';
+    if (document.location.search.indexOf('compiled') !== -1) {
+        script += '-compiled';
+    }
+    script += '.js"><' + '/script>';
+    document.write(script);
 
 
 }
