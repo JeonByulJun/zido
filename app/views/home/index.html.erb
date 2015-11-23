@@ -295,11 +295,11 @@ function initMap() {
             '<%=form_tag '/delete', method:'post' do %>'+
             '<input type="hidden" name="id" value='+
             '<%=p.id%>'+
-            '><input type="submit" value="Delete!" class="btn btn-success"><% end %>'+
+            '><input type="submit" value="Delete!" onClick="this.style.visibility=\'hidden\'" class="btn btn-success"><% end %>'+
             '<%=form_tag '/edit', method:'post' do%>'+
             '<input type="hidden" name="id" value='+
             '<%=p.id%>'+
-            '><input type="submit" value="Edit!" class="btn btn-success"><%end%>'+
+            '><input type="submit" value="Edit!" onClick="this.style.visibility=\'hidden\'" class="btn btn-success"><%end%>'+
             '</div>';
              
             infoBubble = new InfoBubble({
@@ -367,7 +367,7 @@ function initMap() {
                             '>'+
                             '<input id="btnvalue" type="hidden" name="btntype", value="1">'+
                             '<br>'+
-                            '<input id="sum" type="submit" class="btn btn-success" disabled><% end %></div>';
+                            '<input id="sum" type="submit" onClick="this.style.visibility=\'hidden\'" class="btn btn-success" disabled><% end %></div>';
         infoBubble1 = new InfoBubble({
             maxWidth: 350,
             minWidth: 350,
