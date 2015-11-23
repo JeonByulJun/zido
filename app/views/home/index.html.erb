@@ -331,6 +331,8 @@ function initMap() {
     var infoBubble1;
     var infoBubbleTemp = [];
     google.maps.event.addListener(map, 'rightclick', function(event) {
+        
+        $(function () {$('[id=datetimepicker4]').datetimepicker('hide');});
         buttoncount += 1;
         for(var i=0; i<infoBubbleTemp.length; i++){
             if(infoBubbleTemp[i] != null){
@@ -389,6 +391,7 @@ function initMap() {
         infoBubbleTemp.push(infoBubble1);
 
         google.maps.event.addListener(infoBubble1, 'closeclick', function(){
+            $(function () {$('[id=datetimepicker4]').datetimepicker('hide');});
             mark.setMap(null);
         });
         
@@ -402,6 +405,7 @@ function initMap() {
                 $('[id=infob]').popover({title: "Choose Feeling", content: str,html: true, placement: "right"});  
             }); 
             $(function () {$('[id=datetimepicker4]').datetimepicker();});
+            $(function () {$('[id=datetimepicker4]').datetimepicker('hide');});
         });
 
     });
