@@ -13,6 +13,7 @@ class SpotController < ApplicationController
         redirect_to :root
     end
     def edit
+        @custom = Custommarker.where(user_id: current_user.id)
         @temp=Spot.find(params[:id])
         
     end

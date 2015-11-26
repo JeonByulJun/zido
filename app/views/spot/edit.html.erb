@@ -3,15 +3,20 @@
 <div id="map"></div>
 
 <script>
-var titleedit ="ud";
-var contentedit = "ud";
+var buttoncount = 0;
+function abling(val){
+    document.getElementsByName('btntype')[buttoncount].value = val;
+    buttontemp = val;
+}
+var titleedit ="bugcode:1dvqw121bsaxashhh";
+var contentedit = "bugcode:1dvqw121bsaxashhh";
+var buttontemp = -1;
 function detection1(val){
     titleedit = val;
 }
 function detection2(val){
     contentedit = val;
 }
-
 function initMap() {
     var mapCanvas = document.getElementById('map');
     var mapOptions = {
@@ -26,8 +31,18 @@ function initMap() {
     else if(<%=@temp.button%> == 2){
         var images = 'images2.jpg';
     }
-    else{
+    else if(<%=@temp.button%>==3){
         var images = 'images3.jpg';
+    }
+    else{
+        var images
+        <%@custom.each_with_index do |a, index| %>
+            <%if index+4 == @temp.button%>
+                images = '<%=a.markerimage.marker.url%>';     
+            <% end %>
+        <% end %>
+        
+        
     }
     marker = new google.maps.Marker({
         map: map,
@@ -41,12 +56,23 @@ function initMap() {
         var tc = "<%=@temp.content%>"
         var lat = <%=@temp.lat%>;
         var lng = <%=@temp.lng%>;
+        var str = "";
+        for(var i=1; i< 4; i++){
+            str += '<input type="radio" name="btnt" value="'+i+'" onclick="abling('+i+')">index'+i+'<br>'
+        }
+        <%@custom.each_with_index do |p,i|%>
+            str += '<input type="radio" name="btnt" value="'+<%=i+4%>+'" onclick="abling('+<%=i+4%>+')"><%=p.indexname%><br>'
+        <% end %>
         var contentString = '<div id="infobox">'+
                             '<%=form_tag '/update', method:'post' do %><div class="form-group"><label for="comment">Title:</label><textarea name="tit" class="form-control" row="1" onchange="detection1(this.value)">'+
                             tt+
                             '</textarea></div><div class="form-group"><label for="comment">Content:</label><textarea name="con" class="form-control" row="4" onchange="detection2(this.value)">'+
                             tc+
                             '</textarea></div>'+
+                            '<div class="container">'+
+                              '<h6>Click to Change Index</h6>'+
+                              '<button type="button" class="btn btn-success" id="infob">Change Marker Image</button>'+
+                            '</div>'+
                             '<input type="hidden" name="id" value='+
                             '<%=@temp.id%>'+
                             '>'+
@@ -65,16 +91,34 @@ function initMap() {
                             lng+
                             '</p>'+
                             '</div>';
-        infowindow = new google.maps.InfoWindow({
-            content: contentString
+        //infowindow = new google.maps.InfoWindow({
+        //    content: contentString
+        //});
+        //infowindow.open(map, marker);
+        infoBubble3 = new InfoBubble({
+            maxWidth: 350,
+            minWidth: 350,
+            backgroundColor: 'rgb(200,255,255)',
+            bordercolor: '#2c2c2c',
+            shadowStyle: 2
         });
-        infowindow.open(map, marker);
+        infoBubble3.addTab('edit your place', contentString);
+        infoBubble3.open(map, marker);
+        google.maps.event.addListener(infoBubble3, 'domready', function(){
+            $(document).ready(function(){
+                $('[id=infob]').popover({title: "Choose Feeling", content: str,html: true, placement: "right"});  
+            });
+        });
         google.maps.event.addListener(marker, 'dragend', function(event){
-            if(titleedit == "ud"){
+            buttoncount += 1;
+            if(titleedit == "bugcode:1dvqw121bsaxashhh"){
                 titleedit = "<%=@temp.title%>";
             }
-            if(contentedit == "ud"){
+            if(contentedit == "bugcode:1dvqw121bsaxashhh"){
                 contentedit = "<%=@temp.content%>";
+            }
+            if(buttontemp == -1){
+                buttontemp = "<%=@temp.button%>";
             }
             var temps = '<div id="infobox">'+
                     '<%=form_tag '/update', method:'post' do %><div class="form-group"><label for="comment">Title:</label><textarea name="tit" class="form-control" row="1" onchange="detection1(this.value)">'+
@@ -82,6 +126,10 @@ function initMap() {
                     '</textarea></div><div class="form-group"><label for="comment">Content:</label><textarea name="con" class="form-control" row="4" onchange="detection2(this.value)">'+
                     contentedit+
                     '</textarea></div>'+
+                    '<div class="container">'+
+                      '<h6>Click to Change Index</h6>'+
+                      '<button type="button" class="btn btn-success" id="infob">Change Marker Image</button>'+
+                    '</div>'+
                     '<input type="hidden" name="id" value='+
                     '<%=@temp.id%>'+
                     '>'+
@@ -91,7 +139,7 @@ function initMap() {
                     event.latLng.lng()+
                     '>'+
                     '<input type="hidden" name="btntype" value='+
-                    <%=@temp.button%>+
+                    buttontemp+
                     '>'+
                     '<input type="submit" value="Edit!" class=" btn btn-success"><%end%>'+
                     '<p>'+
@@ -101,12 +149,15 @@ function initMap() {
                     '</p>'+
                     '</div>';    
            
-            infowindow.setContent(temps);
-            infowindow.open(map, marker, temps);
+            //infowindow.setContent(temps);
+            //infowindow.open(map, marker, temps);
+            infoBubble3.setContent(temps);
+            infoBubble3.open(map, marker, temps);
         })
-        google.maps.event.addListener(infowindow, 'closeclick', function(){
+        google.maps.event.addListener(infoBubble3, 'closeclick', function(){
             location.href='/';
         })
+
     })(marker);
 }
 

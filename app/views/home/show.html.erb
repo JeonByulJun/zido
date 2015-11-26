@@ -100,6 +100,9 @@ function initMap() {
     };
     var map = new google.maps.Map(mapCanvas, mapOptions);
     <% @marker.each_with_index do |p ,i| %>
+        if(<%=p.button%>==0){
+            var images = ''
+        }
         if(<%=p.button%> == 1){
             var images = 'image.png';
         }
