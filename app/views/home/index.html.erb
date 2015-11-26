@@ -352,12 +352,7 @@ function initMap() {
     var infoBubble1;
     var infoBubbleTemp = [];
     google.maps.event.addListener(map, 'rightclick', function(event) {
-<<<<<<< HEAD
-        
-        $(function () {$('[id=datetimepicker4]').datetimepicker('hide');});
-=======
         $(function () {$('[id=datetimepicker]').datepicker('hide');});
->>>>>>> 90d546f8943b107accdfa71a1f5edd8b260b281c
         buttoncount += 1;
         for(var i=0; i<infoBubbleTemp.length; i++){
             if(infoBubbleTemp[i] != null){
@@ -419,11 +414,7 @@ function initMap() {
         infoBubbleTemp.push(infoBubble1);
 
         google.maps.event.addListener(infoBubble1, 'closeclick', function(){
-<<<<<<< HEAD
-            $(function () {$('[id=datetimepicker4]').datetimepicker('hide');});
-=======
             $(function () {$('[id=datetimepicker]').datepicker('hide');});
->>>>>>> 90d546f8943b107accdfa71a1f5edd8b260b281c
             mark.setMap(null);
         });
         
@@ -435,11 +426,6 @@ function initMap() {
         google.maps.event.addListener(infoBubble1, 'domready', function(){
             $(document).ready(function(){
                 $('[id=infob]').popover({title: "Choose Feeling", content: str,html: true, placement: "right"});  
-<<<<<<< HEAD
-            }); 
-            $(function () {$('[id=datetimepicker4]').datetimepicker();});
-            $(function () {$('[id=datetimepicker4]').datetimepicker('hide');});
-=======
             });
             $(function () {$('[id=datetimepicker]').datepicker({
                 orientation: "bottom auto",
@@ -447,7 +433,6 @@ function initMap() {
             });
             });
             $(function () {$('[id=datetimepicker]').datepicker('hide');});
->>>>>>> 90d546f8943b107accdfa71a1f5edd8b260b281c
         });
 
     });
@@ -471,10 +456,6 @@ function initMap() {
     });
     
     google.maps.event.addDomListener(window, 'load', init);
-    
-
-
-
 }
 function updateStyles() {
     var shadowStyle = document.getElementById('shadowstyle').value;
