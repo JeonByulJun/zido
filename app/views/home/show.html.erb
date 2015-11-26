@@ -100,14 +100,27 @@ function initMap() {
     };
     var map = new google.maps.Map(mapCanvas, mapOptions);
     <% @marker.each_with_index do |p ,i| %>
+        if(<%=p.button%>==0){
+            var images = ''
+        }
         if(<%=p.button%> == 1){
             var images = 'image.png';
         }
         else if(<%=p.button%> == 2){
             var images = 'images2.jpg';
         }
-        else{
+        else if(<%=p.button%>==3){
             var images = 'images3.jpg';
+        }
+        else{
+            var images
+            <%@custom.each_with_index do |a, index| %>
+                <%if index+4 == p.button%>
+                    images = '<%=a.markerimage.marker.url%>';     
+                <% end %>
+            <% end %>
+            
+            
         }
         marker = new google.maps.Marker({
             map: map,

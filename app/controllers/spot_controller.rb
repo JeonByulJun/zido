@@ -13,6 +13,7 @@ class SpotController < ApplicationController
         redirect_to :root
     end
     def edit
+        @custom = Custommarker.where(user_id: current_user.id)
         @temp=Spot.find(params[:id])
         
     end
@@ -26,6 +27,7 @@ class SpotController < ApplicationController
         pp.content = d
         pp.lat = params[:latitude]
         pp.lng = params[:longitude]
+        pp.button = params[:btntype]
         pp.save
         redirect_to :root
     end
