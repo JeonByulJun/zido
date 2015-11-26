@@ -11,7 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151111093128) do
+ActiveRecord::Schema.define(version: 20151126033325) do
+
+  create_table "custommarkers", force: :cascade do |t|
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.string   "markerimage"
+    t.string   "indexname"
+    t.integer  "user_id"
+  end
 
   create_table "spots", force: :cascade do |t|
     t.integer  "user_id"

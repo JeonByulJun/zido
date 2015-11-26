@@ -54,7 +54,14 @@
 </div>
 <br>
 <br>
-
+<div class="container">
+    <%=form_tag '/makemarker', method:'post', enctype:'multipart/form-data' do %>
+        <input type="hidden" name="user" value=<%=current_user.id%>>
+        <input type="text" name="indexname">
+        <input type="file" name="image_file">
+        <input type="submit" value="OK">
+    <% end %>
+</div>
 <form name="checkboxForm" id="checkboxForm" action= '/show' method = 'get'>
     <input id="1cb" type="checkbox" name="btntype[]" value=1 onclick="cbcheck()">good<br>
     <input id="2cb" type="checkbox" name="btntype[]" value=2 onclick="cbcheck()">soso<br>
@@ -137,6 +144,7 @@
 
 
 <script>
+
 function cbcheck(){
     for(var i=1; i<4; i++){
         var temp = i+"cb"
@@ -260,8 +268,18 @@ function initMap() {
         else if(<%=p.button%> == 2){
             var images = 'images2.jpg';
         }
-        else{
+        else if(<%=p.button%>==3){
             var images = 'images3.jpg';
+        }
+        else{
+            var images
+            <%@custom.each_with_index do |a, index| %>
+                <%if index+4 == p.button%>
+                    images = '<%=a.markerimage.marker.url%>';     
+                <% end %>
+            <% end %>
+            
+            
         }
         marker = new google.maps.Marker({
             map: map,
@@ -352,9 +370,12 @@ function initMap() {
         mark.setAnimation(google.maps.Animation.BOUNCE);
 
         var str = "";
-        for(var i=1; i<4; i++){
+        for(var i=1; i< 4; i++){
             str += '<input type="radio" name="btnt" value="'+i+'" onclick="abling('+i+')">index'+i+'<br>'
         }
+        <%@custom.each_with_index do |p,i|%>
+            str += '<input type="radio" name="btnt" value="'+<%=i+4%>+'" onclick="abling('+<%=i+4%>+')"><%=p.indexname%><br>'
+        <% end %>
         var contentString = '<div id="infobox">'+
                             '<div class="title"><h1>MY TRIP</h1></div>'+
                             '<%=form_tag '/make', method:'post', enctype:'multipart/form-data' do %><div class="form-group"><label for="comment">Title:</label><textarea name="tit" class="form-control" row="1"></textarea></div><div class="form-group"><label for="comment">Content:</label><textarea name="con" class="form-control" row="4"></textarea></div>'+
@@ -374,7 +395,7 @@ function initMap() {
                             '<div class="container">'+
                             '<div class="row">'+
                             '<div class="col-sm-3">'+
-                            '<input type="text" class="form-control" data-format="dd/MM/yyyy" id="datetimepicker4" name="spotdate">'+
+                            '<input type="text" class="form-control" data-format="dd/MM/yyyy" id="datetimepicker" name="spotdate">'+
                             '</div>'+
                             '</div>'+
                             '</div>'+
@@ -401,7 +422,7 @@ function initMap() {
             $(document).ready(function(){
                 $('[id=infob]').popover({title: "Choose Feeling", content: str,html: true, placement: "right"});  
             }); 
-            $(function () {$('[id=datetimepicker4]').datetimepicker();});
+            $(function () {$('[id=datetimepicker]').datetimepicker();});
         });
 
     });
