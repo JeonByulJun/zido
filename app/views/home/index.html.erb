@@ -63,9 +63,12 @@
     <% end %>
 </div>
 <form name="checkboxForm" id="checkboxForm" action= '/show' method = 'get'>
-    <input id="1cb" type="checkbox" name="btntype[]" value=1 onclick="cbcheck()">good<br>
-    <input id="2cb" type="checkbox" name="btntype[]" value=2 onclick="cbcheck()">soso<br>
-    <input id="3cb" type="checkbox" name="btntype[]" value=3 onclick="cbcheck()">bad<br> 
+    <input id="1cb" type="checkbox" name="btntype[]" value=1 onclick="cbcheck()">index1<br>
+    <input id="2cb" type="checkbox" name="btntype[]" value=2 onclick="cbcheck()">index2<br>
+    <input id="3cb" type="checkbox" name="btntype[]" value=3 onclick="cbcheck()">index2<br>
+    <%@custom.each_with_index do |p, i|%>
+        <input id="<%=i+4%>cb" type="checkbox" name="btntype[]" value=<%=i+4%> onclick="cbcheck()"><%=p.indexname%><br>
+    <% end %>
     <input id="btnselect" type="submit" value="What You Want to See" class="btn btn-success" disabled>
 </form>
 
@@ -146,7 +149,7 @@
 <script>
 
 function cbcheck(){
-    for(var i=1; i<4; i++){
+    for(var i=1; i<4+<%=@custom.length%>; i++){
         var temp = i+"cb"
         if(document.getElementById(temp).checked){
             document.getElementById("btnselect").disabled = false;
@@ -349,6 +352,7 @@ function initMap() {
     var infoBubble1;
     var infoBubbleTemp = [];
     google.maps.event.addListener(map, 'rightclick', function(event) {
+        $(function () {$('[id=datetimepicker4]').datetimepicker('hide');});
         buttoncount += 1;
         for(var i=0; i<infoBubbleTemp.length; i++){
             if(infoBubbleTemp[i] != null){
@@ -410,6 +414,7 @@ function initMap() {
         infoBubbleTemp.push(infoBubble1);
 
         google.maps.event.addListener(infoBubble1, 'closeclick', function(){
+            $(function () {$('[id=datetimepicker4]').datetimepicker('hide');});
             mark.setMap(null);
         });
         
@@ -422,7 +427,7 @@ function initMap() {
             $(document).ready(function(){
                 $('[id=infob]').popover({title: "Choose Feeling", content: str,html: true, placement: "right"});  
             }); 
-            $(function () {$('[id=datetimepicker]').datetimepicker();});
+            $(function () {$('[id=datetimepicker]').datetimepicker('hide');});
         });
 
     });

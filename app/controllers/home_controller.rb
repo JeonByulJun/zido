@@ -15,6 +15,7 @@ class HomeController < ApplicationController
 
   end
   def show
+    @custom = Custommarker.where(user_id: current_user.id)
     lat=37
     lng=127
     unless params[:latitude]==nil
