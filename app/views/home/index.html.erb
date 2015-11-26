@@ -277,7 +277,7 @@ function initMap() {
         else{
             var images
             <%@custom.each_with_index do |a, index| %>
-                <%if index+4 == p.button%>
+                <%if a.id+4 == p.button%>
                     images = '<%=a.markerimage.marker.url%>';     
                 <% end %>
             <% end %>
