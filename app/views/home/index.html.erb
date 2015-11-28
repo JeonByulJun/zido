@@ -1,16 +1,77 @@
-<div id="container">
-    <div id="header">
-        <ul>
-            <button href="#"> <%= current_user.email %> </button>
-        </ul>
-        <ul>
-            <a href="/users/sign_out" data-method="delete"> Sign Out </a>
-        </ul>
-    </div>
+<head>
+  <meta charset="utf-8">
+    <!-- Optional: clear the XS cols if their content doesn't match in height -->
+    <div class="clearfix visible-xs-block"></div>
 </div>
 
+<nav class="navbar navbar-custom navbar-static-top">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+  
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class-"nav navbar-nav">
+            <div class="row">
+        <a class="navbar-brand" href="https://gmapproto20151127-hanbyul-kim.c9users.io/">
+          <div class="logo-container">          
+            <div class="logo2">
+                <div class="brand">
+                       ZIDO
+                </div>
+                
+          <img src="/panda_logo.png" width=30 height=30>
+            </div>
+          </div>
+        </a>
+        </ul>
+        <ul class="nav navbar-nav navbar-left">
+            <li class="active"><a href="#"><%= current_user.email %> <span class="sr-only">(current)</span></a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <button href="/users/sign_out" data-method="delete" class="btn btn-primary"> Sign Out </button>
+        </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
 
-<div class="col-sm-4 portfolio-item">
+
+
+</div>
+
+</head>
+
+<body class="fullscreen background" style="background-image:url('/bg_main3.png'); height:100%; width:100%; overflow:auto;" data-img-width="1920" data-img-height="1080">
+
+<div class="container" id="sidebar">
+    <%=form_tag '/makemarker', method:'post', enctype:'multipart/form-data' do %>
+        <input type="hidden" name="user" value=<%=current_user.id%>>
+        <input type="text" name="indexname">
+        <input type="file" name="image_file">
+        <input type="submit" value="OK">
+    <% end %>
+<form name="checkboxForm" id="checkboxForm" action= '/show' method = 'get'>
+    <input id="1cb" type="checkbox" name="btntype[]" value=1 onclick="cbcheck()">index1<br>
+    <input id="2cb" type="checkbox" name="btntype[]" value=2 onclick="cbcheck()">index2<br>
+    <input id="3cb" type="checkbox" name="btntype[]" value=3 onclick="cbcheck()">index2<br>
+    <%@custom.each_with_index do |p, i|%>
+        <input id="<%=i+4%>cb" type="checkbox" name="btntype[]" value=<%=i+4%> onclick="cbcheck()"><%=p.indexname%><br>
+    <% end %>
+    <input id="btnselect" type="submit" value="What You Want to See" class="btn btn-success" disabled>
+</form>
+</div>
+
+<br>
+<br>
+
+<div class="col-sm-4 portfolio-item" id="sidebar">
     <a href="#portfolioModal1" class="portfolio-link" data-toggle="modal">
         <div class="caption">
             <div class="caption-content">
@@ -18,18 +79,18 @@
             </div>
         </div>
         <p>See Your Timeline</p>
-        
     </a>
 </div>
 
 <div class="portfolio-modal modal fade" id="portfolioModal1" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-content">
         <div class="close-modal" data-dismiss="modal">
-
         </div>
-
             <div class="row">
                 <div class="col-lg-4">
+                    <div class="modal-header">
+                        <h4 class="modal-title"> Timeline </h4>
+                    </div>
                     <div class="modal-body">
                             <% @memos.each_with_index do |p ,i| %>
                                 <%=p.shigan%>.<br>title: <%=p.title%><br>
@@ -45,38 +106,20 @@
                                 ============================================================
                                 <br>
                             <% end %>
-                        <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
                     </div>
                 </div>
             </div>
 
     </div>
 </div>
+
 <br>
 <br>
-<div class="container">
-    <%=form_tag '/makemarker', method:'post', enctype:'multipart/form-data' do %>
-        <input type="hidden" name="user" value=<%=current_user.id%>>
-        <input type="text" name="indexname">
-        <input type="file" name="image_file">
-        <input type="submit" value="OK">
-    <% end %>
-</div>
-<form name="checkboxForm" id="checkboxForm" action= '/show' method = 'get'>
-    <input id="1cb" type="checkbox" name="btntype[]" value=1 onclick="cbcheck()">index1<br>
-    <input id="2cb" type="checkbox" name="btntype[]" value=2 onclick="cbcheck()">index2<br>
-    <input id="3cb" type="checkbox" name="btntype[]" value=3 onclick="cbcheck()">index2<br>
-    <%@custom.each_with_index do |p, i|%>
-        <input id="<%=i+4%>cb" type="checkbox" name="btntype[]" value=<%=i+4%> onclick="cbcheck()"><%=p.indexname%><br>
-    <% end %>
-    <input id="btnselect" type="submit" value="What You Want to See" class="btn btn-success" disabled>
-</form>
 
 <div id="content">
     <input id="pac-input" class="controls" type="text" placeholder="Search Box">        
     <div id="map"></div>
-</div>
-<div id="sidebar">
     <script>
         var lat=37;
         var lng=127;
@@ -92,9 +135,7 @@
             }            
         </script>
     <% end %>
-
 </div>
-
 <div id="footer">
 <adress>
     © 
@@ -106,12 +147,6 @@
 
 <!--infobubble style-->
 <style>
-    body {
-        font-size: 83%;
-    }
-    body, input, textarea {
-        font-family: arial, sans-serif;
-    }
     #styles, #add-tab {
         float: left;
         margin-top: 10px;
@@ -144,7 +179,6 @@
         background: rgb(112,112,112) !important;
     }
 </style>
-
 
 <script>
 
@@ -509,6 +543,6 @@ function removeTab() {
 
 </script>
 
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2xWsRsM--vAOE_I9dv-ljLh-nO6IU0pU&signed_in=false&libraries=places&callback=initMap&language=en"></script>
 
-
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2xWsRsM--vAOE_I9dv-ljLh-nO6IU0pU&signed_in=false&libraries=places&callback=initMap"></script>
+</body>
