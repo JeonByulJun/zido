@@ -1,3 +1,48 @@
+<link href='https://fonts.googleapis.com/css?family=Gloria+Hallelujah' rel='stylesheet' type='text/css'>
+<style>
+    #topbrd{
+        font-size: 30px;
+        padding: 10px;
+    }
+    h1{
+        font-family: 'Gloria Hallelujah', cursive;
+        font-size: 30px;
+        color: #ffffff;
+    }
+    h6{
+        font-family: 'Gloria Hallelujah', cursive;
+        font-size: 14px;
+        color: #ffffff;
+    }
+    #inputbub0{
+        font-family: 'Gloria Hallelujah', cursive;
+        font-size: 13px;
+        color: #ffffff;
+    }
+    #inputbub{
+        font-family: 'Gloria Hallelujah', cursive;
+        font-size: 13px;
+        color: #333333;
+    }
+    #showbub{
+        font-family: 'Gloria Hallelujah', cursive;
+        font-size: 22px;
+        color: #ffffff;
+    }
+    #bubbutton{
+        padding: 18px;
+    }
+    #bubbutton1{
+        padding: 18px;
+        width: 250px;
+    }
+    #chkbox{
+        font-family: 'Gloria Hallelujah', cursive;
+        font-size: 13px;
+        color: #ffffff;
+    }
+</style>
+
 <head>
   <meta charset="utf-8">
     <!-- Optional: clear the XS cols if their content doesn't match in height -->
@@ -23,7 +68,7 @@
         <a class="navbar-brand" href="https://gmapproto20151127-hanbyul-kim.c9users.io/">
           <div class="logo-container">          
             <div class="logo2">
-                <div class="brand">
+                <div class="brand" id="topbrd">
                        ZIDO
                 </div>
                 
@@ -42,8 +87,6 @@
   </div><!-- /.container-fluid -->
 </nav>
 
-
-
 </div>
 
 </head>
@@ -58,11 +101,11 @@
         <input type="submit" value="OK">
     <% end %>
 <form name="checkboxForm" id="checkboxForm" action= '/show' method = 'get'>
-    <input id="1cb" type="checkbox" name="btntype[]" value=1 onclick="cbcheck()">index1<br>
-    <input id="2cb" type="checkbox" name="btntype[]" value=2 onclick="cbcheck()">index2<br>
-    <input id="3cb" type="checkbox" name="btntype[]" value=3 onclick="cbcheck()">index2<br>
+    <input id="1cb" type="checkbox" name="btntype[]" value=1 onclick="cbcheck()"><ul id="chkbox">index1</ul><br>
+    <input id="2cb" type="checkbox" name="btntype[]" value=2 onclick="cbcheck()"><ul id="chkbox">index2</ul><br>
+    <input id="3cb" type="checkbox" name="btntype[]" value=3 onclick="cbcheck()"><ul id="chkbox">index3</ul><br>
     <%@custom.each_with_index do |p, i|%>
-        <input id="<%=i+4%>cb" type="checkbox" name="btntype[]" value=<%=i+4%> onclick="cbcheck()"><%=p.indexname%><br>
+        <input class="chkbox" id="<%=i+4%>cb" type="checkbox" name="btntype[]" value=<%=i+4%> onclick="cbcheck()"><ul id="chkbox"><%=p.indexname%></ul><br>
     <% end %>
     <input id="btnselect" type="submit" value="What You Want to See" class="btn btn-success" disabled>
 </form>
@@ -339,19 +382,20 @@ function initMap() {
             var contentString2 = 
             '<img src="<%=p.my_image.url%>" >'+
             '<div id="infowindow">'+
-            '<p class="temp">Title:</p>'+
+            '<p class="temp" id="showbub">My Place </p>'+
             '<div id="wrapper" class="container">'+
             ttr +
              '</div>'+
-            '<p class="temp">Content:</p>'+
+            '<p class="temp" id="showbub">Content </p>'+
             '<div id="wrapper" class="container">'+
             tcr +
 
             '</div>'+
-            '<p class="temp">Visited at:</p>'+
+            '<p class="temp" id="showbub">Visited at </p>'+
             '<div id="wrapper" class="container">'+
             '<%=p.shigan%>' +
             '</div>'+
+            '<div id="bubbutton1">'+
             '<%=form_tag '/delete', method:'post' do %>'+
             '<input type="hidden" name="id" value='+
             '<%=p.id%>'+
@@ -360,10 +404,18 @@ function initMap() {
             '<input type="hidden" name="id" value='+
             '<%=p.id%>'+
             '><input type="submit" value="Edit!" onClick="this.style.visibility=\'hidden\'" class="btn btn-success"><%end%>'+
+            '</div>'+
             '</div>';
              
             infoBubble = new InfoBubble({
-                maxWidth: 350
+                maxWidth: 350,
+                minWidth: 350,
+                maxHeight: 450,
+                minHeight: 450,
+                backgroundColor: 'rgb(51,51,51)',
+                borderWidth: 1,
+                borderRadius: 4,
+                borderColor: '#000000'
             });   
             infoBubble.addTab('your place', contentString2);
             google.maps.event.addListener(infoBubble, 'closeclick', function(){
@@ -415,12 +467,15 @@ function initMap() {
             str += '<input type="radio" name="btnt" value="'+<%=i+4%>+'" onclick="abling('+<%=i+4%>+')"><%=p.indexname%><br>'
         <% end %>
         var contentString = '<div id="infobox">'+
-                            '<div class="title"><h1>MY TRIP</h1></div>'+
-                            '<%=form_tag '/make', method:'post', enctype:'multipart/form-data' do %><div class="form-group"><label for="comment">Title:</label><textarea name="tit" class="form-control" row="1"></textarea></div><div class="form-group"><label for="comment">Content:</label><textarea name="con" class="form-control" row="4"></textarea></div>'+
+                            '<div class="title"><h1>MY TRIP<span class="glyphicon glyphicon-send" aria-hidden="true"></h1></span></div>'+
+                            '<%=form_tag '/make', method:'post', enctype:'multipart/form-data' do %><div class="form-group"><label for="comment" id="inputbub0">Your Place</label><textarea name="tit" class="form-control" row="1" id="inputbub"></textarea></div><div class="form-group"><label for="comment" id="inputbub0">Content</label><textarea name="con" class="form-control" row="4" id="inputbub"></textarea></div>'+
                             '<div class="container">'+
-                              '<h6>Choose Feeling</h6>'+
-                              '<button type="button" class="btn btn-success" id="infob">Click me</button>'+
+                            '<h6>Choose Your Icon</h6>'+
+                            '<div id="bubbutton">'+
+                            '<button type="button" class="btn btn-success" id="infob">Click me</button>'+
                             '</div>'+
+                            '</div>'+
+                            '<h6>Take your pics</h6>'+
                             '<input type="file" name="image_file">'+
                             '<input type="hidden" name="time" value=<%=Time.now%>>'+
                             '<input type="hidden" name="latitude" value='+
@@ -437,13 +492,18 @@ function initMap() {
                             '</div>'+
                             '</div>'+
                             '</div>'+
-                            '<input id="sum" type="submit" onClick="this.style.visibility=\'hidden\'" class="btn btn-success" name="buttonsub" disabled><% end %></div>';
+                            '<div id="bubbutton">'+
+                            '<input id="sum" type="submit" onClick="this.style.visibility=\'hidden\'" class="btn btn-success" name="buttonsub" disabled></div><% end %></div>';
         infoBubble1 = new InfoBubble({
             maxWidth: 350,
             minWidth: 350,
-            backgroundColor: 'rgb(200,255,255)',
-            borderColor: '#2c2c2c',
-            shadowStyle: 2
+            maxHeight: 570,
+            minHeight: 570,
+            backgroundColor: 'rgb(51,51,51)',
+            shadowStyle: 2,
+            borderWidth: 1,
+            borderRadius: 4,
+            borderColor: '#000000'
         });                           
         infoBubbleTemp.push(infoBubble1);
 
