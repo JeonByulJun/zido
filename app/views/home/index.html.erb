@@ -38,7 +38,7 @@
     }
     #chkbox{
         font-family: 'Gloria Hallelujah', cursive;
-        font-size: 13px;
+        font-size: 20px;
         color: #ffffff;
     }
 </style>
@@ -354,12 +354,10 @@ function initMap() {
         else{
             var images
             <%@custom.each_with_index do |a, index| %>
-                <%if a.id+4 == p.button%>
+                <%if index+4 == p.button%>
                     images = '<%=a.markerimage.marker.url%>';     
                 <% end %>
             <% end %>
-            
-            
         }
         marker = new google.maps.Marker({
             map: map,
@@ -380,12 +378,12 @@ function initMap() {
             var temp;
 
             var contentString2 = 
-            '<img src="<%=p.my_image.url%>" >'+
             '<div id="infowindow">'+
             '<p class="temp" id="showbub">My Place </p>'+
             '<div id="wrapper" class="container">'+
             ttr +
              '</div>'+
+            '<img src="<%=p.my_image.url%>" >'+
             '<p class="temp" id="showbub">Content </p>'+
             '<div id="wrapper" class="container">'+
             tcr +
