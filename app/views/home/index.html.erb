@@ -88,15 +88,6 @@
         <ul class="nav navbar-nav navbar-left">
             <li class="active"><a href="#"><%= current_user.email %> <span class="sr-only">(current)</span></a></li>
         </ul>
-        <ul class="dropdown-menu">
-            <li><a href="#">Action</a></li>
-            <li><a href="#">Another action</a></li>
-            <li><a href="#">Something else here</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">Separated link</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">One more separated link</a></li>
-        </ul>
         <ul class="nav navbar-nav navbar-right">
             <button href="/users/sign_out" data-method="delete" class="btn btn-primary"> Sign Out </button>
         </ul>
@@ -536,17 +527,19 @@ function initMap() {
         infoBubble1.open(map, mark);
         //infoBubble2.open(map, mark);
         markertemp.push(mark);
+       // $(function () {$('[id=datetimepicker]').datepicker({
+         //       orientation: "bottom auto",
+           //     todayHighlight: true,
+            //});
+            //});
+            //$(function () {$('[id=datetimepicker]').datepicker('hide');});
 
         google.maps.event.addListener(infoBubble1, 'domready', function(){
             $(document).ready(function(){
                 $('[id=infob]').popover({title: "Choose Feeling", content: str,html: true, placement: "right"});  
             });
-            $(function () {$('[id=datetimepicker]').datepicker({
-                orientation: "bottom auto",
-                todayHighlight: true
-            });
-            });
-            $(function () {$('[id=datetimepicker]').datepicker('hide');});
+            $('[id=datetimepicker]').datepicker("setDate","0");
+            $('[id=datetimepicker]').datepicker('hide');
         });
 
     });
