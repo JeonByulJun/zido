@@ -1,40 +1,195 @@
+<link href='https://fonts.googleapis.com/css?family=Gloria+Hallelujah' rel='stylesheet' type='text/css'>
+<style>
+    #topbrd{
+        font-size: 30px;
+        padding: 10px;
+    }
+    h1{
+        font-family: 'Gloria Hallelujah', cursive;
+        font-size: 30px;
+        color: #ffffff;
+    }
+    h6{
+        font-family: 'Gloria Hallelujah', cursive;
+        font-size: 14px;
+        color: #ffffff;
+    }
+    h7{
+        font-family: 'Gloria Hallelujah', cursive;
+        font-size: 20px;
+        color: #000000;
+    }
+    h8{
+        font-family: 'Gloria Hallelujah', cursive;
+        font-size: 15px;
+        color: #333333;
+        padding: 10px;
+    }
+    #inputbub0{
+        font-family: 'Gloria Hallelujah', cursive;
+        font-size: 13px;
+        color: #ffffff;
+    }
+    #inputbub{
+        font-family: 'Gloria Hallelujah', cursive;
+        font-size: 13px;
+        color: #333333;
+    }
+    #showbub{
+        font-family: 'Gloria Hallelujah', cursive;
+        font-size: 22px;
+        color: #ffffff;
+    }
+    #bubbutton{
+        padding: 18px;
+    }
+    #bubbutton1{
+        padding: 18px;
+        width: 250px;
+    }
+    #chkbox{
+        font-family: 'Gloria Hallelujah', cursive;
+        font-size: 20px;
+        color: #000000;
+    }
+    #picshow{
+        padding: 10px;
+    }
+    #txtshow{
+        font-family: 'Gloria Hallelujah', cursive;
+        font-size: 15px;
+        color: #333333;
+    }
+    .new_Btn{
+        text-align: center;
+        font-family: 'Gloria Hallelujah', cursive;
+        border-width: 15px;
+        padding: 15px;
+        border: 15px solid gray;
+        border-color: white;
+        border-radius: 15px;
+        margin: 15px;
+        color:#ffffff;
+    }
+    #pac-input:focus {
+      border-color: #4d90fe;
+    }
+    #pac-input {
+      background-color: #fff;
+      font-family: Roboto;
+      font-size: 15px;
+      font-weight: 300;
+      margin-left: 12px;
+      padding: 0 11px 0 13px;
+      text-overflow: ellipsis;
+      width: 300px;
+    }
+    .pac-container {
+      font-family: Roboto;
+    }
+</style>
+
+<head>
+    <nav class="navbar navbar-custom navbar-static-top">
+        <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+      
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class-"nav navbar-nav">
+                <div class="row">
+                <a class="navbar-brand" href="/">
+                  <div class="logo-container">          
+                    <div class="logo2">
+                        <div class="brand" id="topbrd">
+                               ZIDO
+                        </div>
+                        
+                  <img src="/panda_logo.png" width=30 height=30>
+                    </div>
+                  </div>
+                  
+                </a>
+                </div>
+            </ul>
+            <ul class="nav navbar-nav navbar-left">
+                <li class="active"><a href="#"><%= current_user.email %> <span class="sr-only">(current)</span></a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <a href="/users/sign_out" data-method="delete" class="btn btn-primary"> Sign Out </a>
+            </ul>
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <form name="checkboxForm" id="checkboxForm" action= '/show' method = 'get'>
+                        <input id="1cb" type="checkbox" name="btntype[]" value=1 onclick="cbcheck()"><ul id="chkbox">index1</ul><br>
+                        <input id="2cb" type="checkbox" name="btntype[]" value=2 onclick="cbcheck()"><ul id="chkbox">index2</ul><br>
+                        <input id="3cb" type="checkbox" name="btntype[]" value=3 onclick="cbcheck()"><ul id="chkbox">index3</ul><br>
+                        </%@custom.each_with_index do |p, i|%>
+                            <input class="chkbox" id="</%=i+4%>cb" type="checkbox" name="btntype[]" value=</%=i+4%> onclick="cbcheck()"><ul id="chkbox"></%=p.indexname%></ul><br>
+                        </% end %>
+                        
+                    <li role="separator" class="divider"></li>
+                        <input id="btnselect" type="submit" value="What You Want to See" class="btn btn-success" disabled>
+                    </form>
+                  </ul>
+                </li>
+            </ul>
+        </div>
+      </div>
+    </nav>
+</head>
+
+<body class="fullscreen background" style="background-image:url('/bg_main_sign_in.png'); height:1200px; width:auto; overflow:auto;">
 <h1>Show Page</h1>
 
 <a href = "/">Get Back To Main Page</a>
-<div class="col-sm-4 portfolio-item">
-    <a href="#portfolioModal1" class="portfolio-link" data-toggle="modal">
+<div class="col-sm-4 portfolio-item" id="sidebar">
+    <a href="#myModal" class="portfolio-link" data-toggle="modal">
         <div class="caption">
             <div class="caption-content">
                 <i class="fa fa-search-plus fa-3x"></i>
             </div>
         </div>
         <p>See Your Timeline</p>
-        
     </a>
 </div>
 
-<div class="portfolio-modal modal fade" id="portfolioModal1" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-content">
-        <div class="close-modal" data-dismiss="modal">
-
-        </div>
-        <div class="container">
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog" style="margin-right: 5px">
+    
+        <div class="modal-content">
+            <div class="close-modal" data-dismiss="modal">
+            </div>
             <div class="row">
-                <div class="col-lg-8 col-lg-offset-2">
-                    <div class="modal-body">
+                <div class="col-lg-4">
+                    <div class="modal-header">
+                        <h4 class="modal-title"> Timeline </h4>
+                    </div>
+                    <div class="modal-body" style="width: 500px;">
                             <% @marker.each do |p| %>
-                                <%=p.shigan%>.<br>title: <%=p.title%><br>
-                                content: <%=p.content%><br>
-                                
+                                <h7> <%=p.title%> </h7> <div style="text-align:right;"> <%=p.shigan%>. </div>
+                                <img src="<%=p.my_image.url%>" style="padding: 10px;"> 
+                                <h8> <%=p.content%> </h8>
+                                <br>
                                 <%=form_tag '/showgoto', method:'get' do %>
                                     <input type="hidden" name="latitude" value=<%=p.lat%>>
                                     <input type="hidden" name="longitude" value=<%=p.lng%>>
                                     <input type="hidden" name="btntype[]" value=<%=@temp[0]%>>
                                     <input type="hidden" name="btntype[]" value=<%=@temp[1]%>>
                                     <input type="hidden" name="btntype[]" value=<%=@temp[2]%>>
-                                    <input type="submit" value="이곳으로 가기">
+                                    <div style="text-align:right;">
+                                    <button type="submit" class="btn btn-success"> Go there! </button>
+                                    </div>
                                 <% end %>
-                                ============================================================
                                 <br>
                             <% end %>
                         <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
@@ -44,6 +199,7 @@
         </div>
     </div>
 </div>
+
 <br>
 <br>
 
@@ -59,125 +215,121 @@
             var lng=<%=@lng%>;
         </script>
     <% end %>
-
 </div>
+
 <script>
-
-function initMap() {
-    mcOptions = {styles: [{
-                    height: 45,
-                    url: "c1.jpg",
-                    width: 45
-                },
-                {
-                    height: 55,
-                    url: "c2.jpg",
-                    width: 55
-                },
-                {
-                    height: 65,
-                    url: "c3.jpg",
-                    width: 65
-                },
-                {
-                    height: 75,
-                    url: "c4.jpg",
-                    width: 75
-                },
-                {
-                    height: 85,
-                    url: "c5.jpg",
-                    width: 85
-                }]};
-    var markers = [];
-    var markerclusterer;
-
-    var mapCanvas = document.getElementById('map');
-    var mapOptions = {
-      center: new google.maps.LatLng(lat, lng),
-      zoom: 4,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    };
-    var map = new google.maps.Map(mapCanvas, mapOptions);
-    <% @marker.each_with_index do |p ,i| %>
-        if(<%=p.button%>==0){
-            var images = ''
-        }
-        if(<%=p.button%> == 1){
-            var images = 'image.png';
-        }
-        else if(<%=p.button%> == 2){
-            var images = 'images2.jpg';
-        }
-        else if(<%=p.button%>==3){
-            var images = 'images3.jpg';
-        }
-        else{
-            var images
-            <%@custom.each_with_index do |a, index| %>
-                <%if index+4 == p.button%>
-                    images = '<%=a.markerimage.marker.url%>';     
+    function initMap() {
+        mcOptions = {styles: [{
+                        height: 45,
+                        url: "c1.jpg",
+                        width: 45
+                    },
+                    {
+                        height: 55,
+                        url: "c2.jpg",
+                        width: 55
+                    },
+                    {
+                        height: 65,
+                        url: "c3.jpg",
+                        width: 65
+                    },
+                    {
+                        height: 75,
+                        url: "c4.jpg",
+                        width: 75
+                    },
+                    {
+                        height: 85,
+                        url: "c5.jpg",
+                        width: 85
+                    }]};
+        var markers = [];
+        var markerclusterer;
+    
+        var mapCanvas = document.getElementById('map');
+        var mapOptions = {
+          center: new google.maps.LatLng(lat, lng),
+          zoom: 4,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        var map = new google.maps.Map(mapCanvas, mapOptions);
+        <% @marker.each_with_index do |p ,i| %>
+            if(<%=p.button%>==0){
+                var images = ''
+            }
+            if(<%=p.button%> == 1){
+                var images = 'image.png';
+            }
+            else if(<%=p.button%> == 2){
+                var images = 'images2.jpg';
+            }
+            else if(<%=p.button%>==3){
+                var images = 'images3.jpg';
+            }
+            else{
+                var images
+                <%@custom.each_with_index do |a, index| %>
+                    <%if index+4 == p.button%>
+                        images = '<%=a.markerimage.marker.url%>';     
+                    <% end %>
                 <% end %>
-            <% end %>
-            
-            
-        }
-        marker = new google.maps.Marker({
-            map: map,
-            icon: images,
-            position: {lat: <%=p.lat%>, lng: <%=p.lng%>},
-            animation: google.maps.Animation.DROP,
-        });
-        
-
-
-
-        (function(marker){
-
-            var tt = "<%=p.title%>"
-            var tc = "<%=p.content%>"
-            var ttr = tt.replace(/&lt;br&gt;/g,"\r\n")
-            var tcr = tc.replace(/&lt;br&gt;/g,"\r\n")
-            var temp;
-
-            var contentString2 = 
-            '<img src="<%=p.my_image.url%>" >'+
-            '<div id="infowindow">'+
-            '<p class="temp">Title:</p>'+
-            '<div id="wrapper" class="container">'+
-            ttr +
-             '</div>'+
-            '<p class="temp">Content:</p>'+
-            '<div id="wrapper" class="container">'+
-            tcr +
-
-            '</div>'+
-            '<%=form_tag '/delete', method:'post' do %>'+
-            '<input type="hidden" name="id" value='+
-            '<%=p.id%>'+
-            '><input type="submit" value="Delete!" class="btn btn-success"><% end %>'+
-            '<%=form_tag '/edit', method:'post' do%>'+
-            '<input type="hidden" name="id" value='+
-            '<%=p.id%>'+
-            '><input type="submit" value="Edit!" class="btn btn-success"><%end%>'+
-            '</div>';
-            
-            var infowindow = new google.maps.InfoWindow({
-                content: contentString2
+                
+                
+            }
+            marker = new google.maps.Marker({
+                map: map,
+                icon: images,
+                position: {lat: <%=p.lat%>, lng: <%=p.lng%>},
+                animation: google.maps.Animation.DROP,
             });
-            google.maps.event.addListener(infowindow, 'closeclick', function(){
-                marker.setAnimation(null);
-            });
-            google.maps.event.addListener(marker, 'click', function(){
-                infowindow.open(map,marker);
-                marker.setAnimation(google.maps.Animation.BOUNCE);   
-            })
-
-
-        })(marker);
-        markers.push(marker);
-    <% end %>
-    markerclusterer = new MarkerClusterer(map, markers, mcOptions);
-}
+            
+            (function(marker){
+    
+                var tt = "<%=p.title%>"
+                var tc = "<%=p.content%>"
+                var ttr = tt.replace(/&lt;br&gt;/g,"\r\n")
+                var tcr = tc.replace(/&lt;br&gt;/g,"\r\n")
+                var temp;
+    
+                var contentString2 = 
+                '<img src="<%=p.my_image.url%>" >'+
+                '<div id="infowindow">'+
+                '<p class="temp">Title:</p>'+
+                '<div id="wrapper" class="container">'+
+                ttr +
+                 '</div>'+
+                '<p class="temp">Content:</p>'+
+                '<div id="wrapper" class="container">'+
+                tcr +
+    
+                '</div>'+
+                '<%=form_tag '/delete', method:'post' do %>'+
+                '<input type="hidden" name="id" value='+
+                '<%=p.id%>'+
+                '><input type="submit" value="Delete!" class="btn btn-success"><% end %>'+
+                '<%=form_tag '/edit', method:'post' do%>'+
+                '<input type="hidden" name="id" value='+
+                '<%=p.id%>'+
+                '><input type="submit" value="Edit!" class="btn btn-success"><%end%>'+
+                '</div>';
+                
+                var infowindow = new google.maps.InfoWindow({
+                    content: contentString2
+                });
+                google.maps.event.addListener(infowindow, 'closeclick', function(){
+                    marker.setAnimation(null);
+                });
+                google.maps.event.addListener(marker, 'click', function(){
+                    infowindow.open(map,marker);
+                    marker.setAnimation(google.maps.Animation.BOUNCE);   
+                })
+            })(marker);
+            markers.push(marker);
+        <% end %>
+        markerclusterer = new MarkerClusterer(map, markers, mcOptions);
+    }
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2xWsRsM--vAOE_I9dv-ljLh-nO6IU0pU&signed_in=false&libraries=places&callback=initMap"></script>
+
+</body>

@@ -14,6 +14,17 @@
         font-size: 14px;
         color: #ffffff;
     }
+    h7{
+        font-family: 'Gloria Hallelujah', cursive;
+        font-size: 20px;
+        color: #000000;
+    }
+    h8{
+        font-family: 'Gloria Hallelujah', cursive;
+        font-size: 15px;
+        color: #333333;
+        padding: 10px;
+    }
     #inputbub0{
         font-family: 'Gloria Hallelujah', cursive;
         font-size: 13px;
@@ -39,7 +50,7 @@
     #chkbox{
         font-family: 'Gloria Hallelujah', cursive;
         font-size: 20px;
-        color: #ffffff;
+        color: #000000;
     }
     #picshow{
         padding: 10px;
@@ -49,81 +60,171 @@
         font-size: 15px;
         color: #333333;
     }
+    .new_Btn{
+        text-align: center;
+        font-family: 'Gloria Hallelujah', cursive;
+        border-width: 15px;
+        padding: 15px;
+        border: 15px solid gray;
+        border-color: white;
+        border-radius: 15px;
+        margin: 15px;
+        color:#ffffff;
+    }
+    #pac-input:focus {
+      border-color: #4d90fe;
+    }
+    #pac-input {
+      background-color: #fff;
+      font-family: Roboto;
+      font-size: 15px;
+      font-weight: 300;
+      margin-left: 12px;
+      padding: 0 11px 0 13px;
+      text-overflow: ellipsis;
+      width: 300px;
+    }
+    .pac-container {
+      font-family: Roboto;
+    }
 </style>
-
 <head>
-  <meta charset="utf-8">
-    <!-- Optional: clear the XS cols if their content doesn't match in height -->
+<!--
+<head>
     <div class="clearfix visible-xs-block"></div>
 </div>
-
 <nav class="navbar navbar-custom navbar-static-top">
-  <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-    </div>
-  
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-        <ul class-"nav navbar-nav">
-            <div class="row">
-        <a class="navbar-brand" href="https://gmapproto20151127-hanbyul-kim.c9users.io/">
-          <div class="logo-container">          
-            <div class="logo2">
-                <div class="brand" id="topbrd">
-                       ZIDO
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+      
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class-"nav navbar-nav">
+            <a class="navbar-brand" href="/">
+              <div class="logo-container">          
+                <div class="logo2">
+                    <div class="brand" id="topbrd">
+                           ZIDO
+                    </div>
+                    
+              <img src="/panda_logo.png" width=30 height=30>
                 </div>
-                
-          <img src="/panda_logo.png" width=30 height=30>
-            </div>
-          </div>
-        </a>
-        </ul>
-        <ul class="nav navbar-nav navbar-left">
-            <li class="active"><a href="#"><%= current_user.email %> <span class="sr-only">(current)</span></a></li>
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-            <button href="/users/sign_out" data-method="delete" class="btn btn-primary"> Sign Out </button>
-        </ul>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
+              </div>
+            </a>
+            </ul>
+            <ul class="nav navbar-nav navbar-left">
+                <li class="active"><a href="#"></%= current_user.email %> <span class="sr-only">(current)</span></a></li>
+            </ul>
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <form name="checkboxForm" id="checkboxForm" action= '/show' method = 'get'>
+                        <input id="1cb" type="checkbox" name="btntype[]" value=1 onclick="cbcheck()"><ul id="chkbox">index1</ul><br>
+                        <input id="2cb" type="checkbox" name="btntype[]" value=2 onclick="cbcheck()"><ul id="chkbox">index2</ul><br>
+                        <input id="3cb" type="checkbox" name="btntype[]" value=3 onclick="cbcheck()"><ul id="chkbox">index3</ul><br>
+                        </%@custom.each_with_index do |p, i|%>
+                            <input class="chkbox" id="</%=i+4%>cb" type="checkbox" name="btntype[]" value=</%=i+4%> onclick="cbcheck()"><ul id="chkbox"></%=p.indexname%></ul><br>
+                        </% end %>
+                        
+                    <li role="separator" class="divider"></li>
+                        <input id="btnselect" type="submit" value="What You Want to See" class="btn btn-success" disabled>
+                    </form>
+                  </ul>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav">
+                </%=form_tag '/makemarker', method:'post', enctype:'multipart/form-data' do %>
+                    <input type="hidden" name="user" value=</%=current_user.id%>>
+                    <input type="text" name="indexname">
+                    <input type="file" name="image_file">
+                    <input type="submit" value="OK">
+                </% end %>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <a href="/users/sign_out" data-method="delete" class="btn btn-primary"> Sign Out </a>
+            </ul>
+        </div>
+      </div>
+    </div>
 </nav>
+-->
+    <nav class="navbar navbar-custom navbar-static-top">
+        <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+      
 
-</div>
-
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class-"nav navbar-nav">
+                <div class="row">
+                <a class="navbar-brand" href="/">
+                  <div class="logo-container">          
+                    <div class="logo2">
+                        <div class="brand" id="topbrd">
+                               ZIDO
+                        </div>
+                        
+                  <img src="/panda_logo.png" width=30 height=30>
+                    </div>
+                  </div>
+                  
+                </a>
+                </div>
+            </ul>
+            <ul class="nav navbar-nav navbar-left">
+                <li class="active"><a href="#"><%= current_user.email %> <span class="sr-only">(current)</span></a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <a href="/users/sign_out" data-method="delete" class="btn btn-primary"> Sign Out </a>
+            </ul>
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <form name="checkboxForm" id="checkboxForm" action= '/show' method = 'get'>
+                        <input id="1cb" type="checkbox" name="btntype[]" value=1 onclick="cbcheck()"><ul id="chkbox">index1</ul><br>
+                        <input id="2cb" type="checkbox" name="btntype[]" value=2 onclick="cbcheck()"><ul id="chkbox">index2</ul><br>
+                        <input id="3cb" type="checkbox" name="btntype[]" value=3 onclick="cbcheck()"><ul id="chkbox">index3</ul><br>
+                        </%@custom.each_with_index do |p, i|%>
+                            <input class="chkbox" id="</%=i+4%>cb" type="checkbox" name="btntype[]" value=</%=i+4%> onclick="cbcheck()"><ul id="chkbox"></%=p.indexname%></ul><br>
+                        </% end %>
+                        
+                    <li role="separator" class="divider"></li>
+                        <input id="btnselect" type="submit" value="What You Want to See" class="btn btn-success" disabled>
+                    </form>
+                  </ul>
+                </li>
+            </ul>
+        </div>
+      </div>
+    </nav>
 </head>
 
-<body class="fullscreen background" style="background-image:url('/bg_main3.png'); height:100%; width:100%; overflow:auto;" data-img-width="1920" data-img-height="1080">
-
+<body class="fullscreen background" style="background-image:url('/bg_main_sign_in.png'); height:1200px; width:auto; overflow:auto;">
+<!--
 <div class="container" id="sidebar">
-    <%=form_tag '/makemarker', method:'post', enctype:'multipart/form-data' do %>
-        <input type="hidden" name="user" value=<%=current_user.id%>>
-        <input type="text" name="indexname">
-        <input type="file" name="image_file">
-        <input type="submit" value="OK">
-    <% end %>
-<form name="checkboxForm" id="checkboxForm" action= '/show' method = 'get'>
-    <input id="1cb" type="checkbox" name="btntype[]" value=1 onclick="cbcheck()"><ul id="chkbox">index1</ul><br>
-    <input id="2cb" type="checkbox" name="btntype[]" value=2 onclick="cbcheck()"><ul id="chkbox">index2</ul><br>
-    <input id="3cb" type="checkbox" name="btntype[]" value=3 onclick="cbcheck()"><ul id="chkbox">index3</ul><br>
-    <%@custom.each_with_index do |p, i|%>
-        <input class="chkbox" id="<%=i+4%>cb" type="checkbox" name="btntype[]" value=<%=i+4%> onclick="cbcheck()"><ul id="chkbox"><%=p.indexname%></ul><br>
-    <% end %>
-    <input id="btnselect" type="submit" value="What You Want to See" class="btn btn-success" disabled>
-</form>
-</div>
+    
 
+</div>
+-->
 <br>
 <br>
 
 <div class="col-sm-4 portfolio-item" id="sidebar">
-    <a href="#portfolioModal1" class="portfolio-link" data-toggle="modal">
+    <a href="#myModal" class="portfolio-link" data-toggle="modal">
         <div class="caption">
             <div class="caption-content">
                 <i class="fa fa-search-plus fa-3x"></i>
@@ -133,35 +234,37 @@
     </a>
 </div>
 
-<div class="portfolio-modal modal fade" id="portfolioModal1" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-content">
-        <div class="close-modal" data-dismiss="modal">
-        </div>
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog" style="margin-right: 5px">
+    
+        <div class="modal-content">
+            <div class="close-modal" data-dismiss="modal">
+            </div>
             <div class="row">
                 <div class="col-lg-4">
                     <div class="modal-header">
                         <h4 class="modal-title"> Timeline </h4>
                     </div>
-                    <div class="modal-body">
-                            <% @memos.each_with_index do |p ,i| %>
-                                <%=p.shigan%>.<br>title: <%=p.title%><br>
-                                content: <%=p.content%>
-                                <img src="<%=p.my_image.url%>" %>
-                                <br>
-                                
-                                <%=form_tag '/goto', method:'post' do %>
-                                    <input type="hidden" name="latitude" value=<%=p.lat%>>
-                                    <input type="hidden" name="longitude" value=<%=p.lng%>>
-                                    <input type="submit" value="이곳으로 가기">
-                                <% end %>
-                                ============================================================
-                                <br>
+                    <div class="modal-body" style="width: 500px;">
+                        <% @memos.each_with_index do |p ,i| %>
+                            <h7> <%=p.title%> </h7> <div style="text-align:right;"> <%=p.shigan%>. </div>
+                            <img src="<%=p.my_image.url%>" style="padding: 10px;"> 
+                            <h8> <%=p.content%> </h8>
+                            <br>
+                            <%=form_tag '/goto', method:'post' do %>
+                                <input type="hidden" name="latitude" value=<%=p.lat%>>
+                                <input type="hidden" name="longitude" value=<%=p.lng%>>
+                                <div style="text-align:right;">
+                                <button type="submit" class="btn btn-success"> Go there! </button>
+                                </div>
                             <% end %>
-                            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                            <br>
+                        <% end %>
+                        <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
                     </div>
                 </div>
             </div>
-
+        </div>
     </div>
 </div>
 
@@ -187,8 +290,9 @@
         </script>
     <% end %>
 </div>
+
 <div id="footer">
-<adress>
+<adress id="adresssty">
     © 
     <strong>
         <a target="_blank">JEONBYULJUN Corp.</a>
@@ -478,7 +582,7 @@ function initMap() {
             str += '<input type="radio" name="btnt" value="'+<%=i+4%>+'" onclick="abling('+<%=i+4%>+')"><%=p.indexname%><br>'
         <% end %>
         var contentString = '<div id="infobox">'+
-                            '<div class="title"><h1>MY TRIP<span class="glyphicon glyphicon-send" aria-hidden="true"></h1></span></div>'+
+                            '<div class="title"><h1>MY TRIP<span aria-hidden="true"></h1></span></div>'+
                             '<%=form_tag '/make', method:'post', enctype:'multipart/form-data' do %><div class="form-group"><label for="comment" id="inputbub0">Your Place</label><textarea name="tit" class="form-control" row="1" id="inputbub"></textarea></div><div class="form-group"><label for="comment" id="inputbub0">Content</label><textarea name="con" class="form-control" row="4" id="inputbub"></textarea></div>'+
                             '<div class="container">'+
                             '<h6>Choose Your Icon</h6>'+
@@ -487,7 +591,8 @@ function initMap() {
                             '</div>'+
                             '</div>'+
                             '<h6>Take your pics</h6>'+
-                            '<input type="file" name="image_file">'+
+                            '<div class="new_Btn">Select Picture</div><br>'+
+                            '<input type="file" name="image_file" id="html_btn">'+
                             '<input type="hidden" name="time" value=<%=Time.now%>>'+
                             '<input type="hidden" name="latitude" value='+
                             startLocation.lat()+
@@ -499,7 +604,7 @@ function initMap() {
                             '<div class="container">'+
                             '<div class="row">'+
                             '<div class="col-sm-3">'+
-                            '<input type="text" class="form-control" data-format="dd/MM/yyyy" id="datetimepicker" name="spotdate">'+
+                            '<input type="text" class="form-control" data-date-format="dd/mm/yyyy" id="datetimepicker" name="spotdate">'+
                             '</div>'+
                             '</div>'+
                             '</div>'+
@@ -540,6 +645,9 @@ function initMap() {
             });
             $('[id=datetimepicker]').datepicker("setDate","0");
             $('[id=datetimepicker]').datepicker('hide');
+            $('.new_Btn').bind("click",function(){
+                $('#html_btn').click();
+            });
         });
 
     });

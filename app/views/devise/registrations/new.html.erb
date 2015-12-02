@@ -1,62 +1,92 @@
-<div class='blurred-container'>
-      <a href="https://zidooo-hyunjunian.c9users.io/">
-         <div class="logo-container">          
-            <div class="logo2">
-                <img src="/panda_logo.png" width=30 height=30>
-            <div class="brand">
-                ZIDO
-            </div>
-            </div>
-        </div>
-      </a>
-    <div class="motto">
-      <h1>
-        <div class="border no-right-border">ZI</div><div class="border">DO</div>
-      </h1>
-
-<h3>Sign up</h3>
-<h5>
-
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= devise_error_messages! %>
-
-  <div class="field">
-    <%= f.label :email %><br />
-      <div style="color: skyblue">
-    <%= f.email_field :email, autofocus: true %>
-    </div>
-  </div>
-
-  <div class="field">
-    <%= f.label :password %>
-    <% if @minimum_password_length %>
-    <em>(<%= @minimum_password_length %> characters minimum)</em>
-    <% end %><br />
-      <div style="color: skyblue">
-    <%= f.password_field :password, autocomplete: "off" %>
-    </div>
-  </div>
-
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-      <div style="color: skyblue">
-    <%= f.password_field :password_confirmation, autocomplete: "off" %>
-    </div>
-  </div>
-
-  <div class="actions" style="color: skyblue">
-    <%= f.submit "Sign up" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
-
-</h5>
-    </div>
-  <div class="img-src" style="background-image: url('/bg_main2.png')"></div>
+<head>
+  <link data-turbolinks-track="true" href="https://s3.amazonaws.com/creativetim_bucket/get_shit_done/css/get_shit_done.css" media="all" rel="stylesheet" />
+  <link href='https://fonts.googleapis.com/css?family=Gloria+Hallelujah' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/earlyaccess/hanna.css' rel='stylesheet' type='text/css'>
   
-  <div class='img-src blur' style="background-image: url('/bg_main.png')"></div>
-</div>
+  <style>
+    h2{
+      font-family: 'Hanna', sans-serif;
+      font-size: 30px;
+      padding: 15px;
+    }
+    h3{
+      font-family: 'Gloria Hallelujah', cursive;
+      font-size: 30px;
+      padding: 10px;
+    }
+    h4{
+      font-size: 35px;
+    }
+    #centerer{
+      width:auto;
+      margin : 0 auto;
+    }
+  </style>
+  
+  <a href="https://zidooo-hyunjunian.c9users.io/">
+    <div class="logo-container">          
+      <div class="logo2">
+        <img src="/panda_logo.png" width=30 height=30>
+        <div class="brand">
+            ZIDO
+        </div>
+      </div>
+    </div>
+  </a>
+</head>
 
+<body class="fullscreen background" style="background-image:url('/bg_main3.png'); height:auto; width:auto; overflow:auto;">
 
+    <div class='blurred-container' id="centerer">
+        
+      <div class="motto">
+        <h1>
+          <div class="border no-right-border">ZI</div><div class="border">DO</div>
+        </h1>
+  
+        <h3>Sign up</h3>
+        <h5>
+        
+        <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+          <%= devise_error_messages! %>
+        
+          <div class="field">
+            <%= f.label :email %><br />
+              <div style="color: skyblue">
+                <br>
+              <%= f.email_field :email, autofocus: true %>
+            </div>
+          </div>
+          <br>
+          <div class="field">
+            <%= f.label :password %>
+            <% if @minimum_password_length %>
+            <em>(<%= @minimum_password_length %> characters minimum)</em>
+            <% end %><br />
+             <div style="color: skyblue">
+               <br>
+               <%= f.password_field :password, autocomplete: "off" %>
+            </div>
+          </div>
+          <br>
+          <div class="field">
+            <%= f.label :password_confirmation %><br />
+              <div style="color: skyblue">
+                <br>
+                <%= f.password_field :password_confirmation, autocomplete: "off" %>
+                </div>
+              </div>
+          <br>
+          <div class="actions" style="color: skyblue">
+            <%= f.submit "Sign up" %>
+          </div>
+        <% end %>
+        <br>
+        
+        <%= render "devise/shared/links" %>
+        
+        </h5>
+      </div>
+    </div>
 
+</body>
