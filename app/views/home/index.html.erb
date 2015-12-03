@@ -155,7 +155,11 @@
     </div>
 </nav>
 -->
-    <nav class="navbar navbar-custom navbar-static-top">
+</head>
+
+<body class="fullscreen background" style="background-image:url('/bg_main_sign_in.png'); height:1200px; width:auto; overflow:auto;">
+
+<nav class="navbar navbar-custom navbar-static-top">
         <div class="container-fluid">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
@@ -174,13 +178,11 @@
                   <div class="logo-container">          
                     <div class="logo2">
                         <div class="brand" id="topbrd">
-                               ZIDO
+                           ZIDO
+                          <img src="/panda_logo.png" width=30 height=30>
                         </div>
-                        
-                  <img src="/panda_logo.png" width=30 height=30>
                     </div>
                   </div>
-                  
                 </a>
                 </div>
             </ul>
@@ -198,10 +200,9 @@
                         <input id="1cb" type="checkbox" name="btntype[]" value=1 onclick="cbcheck()"><ul id="chkbox">index1</ul><br>
                         <input id="2cb" type="checkbox" name="btntype[]" value=2 onclick="cbcheck()"><ul id="chkbox">index2</ul><br>
                         <input id="3cb" type="checkbox" name="btntype[]" value=3 onclick="cbcheck()"><ul id="chkbox">index3</ul><br>
-                        </%@custom.each_with_index do |p, i|%>
-                            <input class="chkbox" id="</%=i+4%>cb" type="checkbox" name="btntype[]" value=</%=i+4%> onclick="cbcheck()"><ul id="chkbox"></%=p.indexname%></ul><br>
-                        </% end %>
-                        
+                        <%@custom.each_with_index do |p, i|%>
+                            <input class="chkbox" id="<%=i+4%>cb" type="checkbox" name="btntype[]" value=<%=i+4%> onclick="cbcheck()"><ul id="chkbox"><%=p.indexname%></ul><br>
+                        <% end %>
                     <li role="separator" class="divider"></li>
                         <input id="btnselect" type="submit" value="What You Want to See" class="btn btn-success" disabled>
                     </form>
@@ -211,17 +212,6 @@
         </div>
       </div>
     </nav>
-</head>
-
-<body class="fullscreen background" style="background-image:url('/bg_main_sign_in.png'); height:1200px; width:auto; overflow:auto;">
-<!--
-<div class="container" id="sidebar">
-    
-
-</div>
--->
-<br>
-<br>
 
 <div class="col-sm-4 portfolio-item" id="sidebar">
     <a href="#myModal" class="portfolio-link" data-toggle="modal">
@@ -268,8 +258,6 @@
     </div>
 </div>
 
-<br>
-<br>
 
 <div id="content">
     <input id="pac-input" class="controls" type="text" placeholder="Search Box">        
