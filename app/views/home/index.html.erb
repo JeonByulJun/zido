@@ -88,129 +88,75 @@
       font-family: Roboto;
     }
 </style>
-<head>
-<!--
-<head>
-    <div class="clearfix visible-xs-block"></div>
-</div>
-<nav class="navbar navbar-custom navbar-static-top">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-        </div>
-      
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class-"nav navbar-nav">
-            <a class="navbar-brand" href="/">
-              <div class="logo-container">          
-                <div class="logo2">
-                    <div class="brand" id="topbrd">
-                           ZIDO
-                    </div>
-                    
-              <img src="/panda_logo.png" width=30 height=30>
-                </div>
-              </div>
-            </a>
-            </ul>
-            <ul class="nav navbar-nav navbar-left">
-                <li class="active"><a href="#"></%= current_user.email %> <span class="sr-only">(current)</span></a></li>
-            </ul>
-            <ul class="nav navbar-nav">
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-                  <ul class="dropdown-menu">
-                    <form name="checkboxForm" id="checkboxForm" action= '/show' method = 'get'>
-                        <input id="1cb" type="checkbox" name="btntype[]" value=1 onclick="cbcheck()"><ul id="chkbox">index1</ul><br>
-                        <input id="2cb" type="checkbox" name="btntype[]" value=2 onclick="cbcheck()"><ul id="chkbox">index2</ul><br>
-                        <input id="3cb" type="checkbox" name="btntype[]" value=3 onclick="cbcheck()"><ul id="chkbox">index3</ul><br>
-                        </%@custom.each_with_index do |p, i|%>
-                            <input class="chkbox" id="</%=i+4%>cb" type="checkbox" name="btntype[]" value=</%=i+4%> onclick="cbcheck()"><ul id="chkbox"></%=p.indexname%></ul><br>
-                        </% end %>
-                        
-                    <li role="separator" class="divider"></li>
-                        <input id="btnselect" type="submit" value="What You Want to See" class="btn btn-success" disabled>
-                    </form>
-                  </ul>
-                </li>
-            </ul>
-            <ul class="nav navbar-nav">
-                </%=form_tag '/makemarker', method:'post', enctype:'multipart/form-data' do %>
-                    <input type="hidden" name="user" value=</%=current_user.id%>>
-                    <input type="text" name="indexname">
-                    <input type="file" name="image_file">
-                    <input type="submit" value="OK">
-                </% end %>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <a href="/users/sign_out" data-method="delete" class="btn btn-primary"> Sign Out </a>
-            </ul>
-        </div>
-      </div>
-    </div>
-</nav>
--->
-</head>
+
 
 <body class="fullscreen background" style="background-image:url('/bg_main_sign_in.png'); height:1200px; width:auto; overflow:auto;">
 
-<nav class="navbar navbar-custom navbar-static-top">
-        <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-        </div>
-      
-
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class-"nav navbar-nav">
-                <div class="row">
-                <a class="navbar-brand" href="/">
-                  <div class="logo-container">          
-                    <div class="logo2">
-                        <div class="brand" id="topbrd">
-                           ZIDO
-                          <img src="/panda_logo.png" width=30 height=30>
+    <nav class="navbar navbar-custom navbar-static-top">
+            <div class="container-fluid">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+            </div>
+          
+    
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class-"nav navbar-nav">
+                    <div class="row">
+                    <a class="navbar-brand" href="/">
+                      <div class="logo-container">          
+                        <div class="logo2">
+                            <div class="brand" id="topbrd">
+                               ZIDO
+                              <img src="/panda_logo.png" width=30 height=30>
+                            </div>
                         </div>
+                      </div>
+                    </a>
                     </div>
-                  </div>
-                </a>
-                </div>
-            </ul>
-            <ul class="nav navbar-nav navbar-left">
-                <li class="active"><a href="#"><%= current_user.email %> <span class="sr-only">(current)</span></a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <a href="/users/sign_out" data-method="delete" class="btn btn-primary"> Sign Out </a>
-            </ul>
-            <ul class="nav navbar-nav">
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-                  <ul class="dropdown-menu">
-                    <form name="checkboxForm" id="checkboxForm" action= '/show' method = 'get'>
-                        <input id="1cb" type="checkbox" name="btntype[]" value=1 onclick="cbcheck()"><ul id="chkbox">index1</ul><br>
-                        <input id="2cb" type="checkbox" name="btntype[]" value=2 onclick="cbcheck()"><ul id="chkbox">index2</ul><br>
-                        <input id="3cb" type="checkbox" name="btntype[]" value=3 onclick="cbcheck()"><ul id="chkbox">index3</ul><br>
-                        <%@custom.each_with_index do |p, i|%>
-                            <input class="chkbox" id="<%=i+4%>cb" type="checkbox" name="btntype[]" value=<%=i+4%> onclick="cbcheck()"><ul id="chkbox"><%=p.indexname%></ul><br>
-                        <% end %>
-                    <li role="separator" class="divider"></li>
-                        <input id="btnselect" type="submit" value="What You Want to See" class="btn btn-success" disabled>
-                    </form>
-                  </ul>
-                </li>
-            </ul>
-        </div>
-      </div>
+                </ul>
+                <ul class="nav navbar-nav navbar-left">
+                    <li class="active"><a href="#"><%= current_user.email %> <span class="sr-only">(current)</span></a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <a href="/users/sign_out" data-method="delete" class="btn btn-primary"> Sign Out </a>
+                </ul>
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                      <ul class="dropdown-menu">
+                        <form name="checkboxForm" id="checkboxForm" action= '/show' method = 'get'>
+                            <input id="1cb" type="checkbox" name="btntype[]" value=1 onclick="cbcheck()"><ul id="chkbox">index1</ul><br>
+                            <input id="2cb" type="checkbox" name="btntype[]" value=2 onclick="cbcheck()"><ul id="chkbox">index2</ul><br>
+                            <input id="3cb" type="checkbox" name="btntype[]" value=3 onclick="cbcheck()"><ul id="chkbox">index3</ul><br>
+                            <%@custom.each_with_index do |p, i|%>
+                                <input class="chkbox" id="<%=i+4%>cb" type="checkbox" name="btntype[]" value=<%=i+4%> onclick="cbcheck()"><ul id="chkbox"><%=p.indexname%></ul><br>
+                            <% end %>
+                        <li role="separator" class="divider"></li>
+                            <input id="btnselect" type="submit" value="What You Want to See" class="btn btn-success" disabled>
+                        </form>
+                      </ul>
+                    </li>
+                    <li><button type="button" class="btn btn-success" id="info">Click me</button></li>
+                    <script>
+                        
+                          var content = '<%=form_tag "/makemarker", method:"post", enctype:"multipart/form-data" do %>'+
+                                            '<input type="hidden" name="user" value=<%=current_user.id%>>'+
+                                            '<input type="text" name="indexname" style="color:#000000;">'+
+                                            '<input type="file" name="image_file">'+
+                                            '<input type="submit" value="OK"><% end %>';
+                        
+                        $(document).ready(function(){
+                            $('[id=info]').popover({title: "choose feeling", content: content, html:true, placement: "right"});   
+                        });
+                    </script>
+                </ul>
+            </div>
+          </div>
     </nav>
 
 <div class="col-sm-4 portfolio-item" id="sidebar">
@@ -618,14 +564,7 @@ function initMap() {
         
         infoBubble1.addTab('add your place', contentString)
         infoBubble1.open(map, mark);
-        //infoBubble2.open(map, mark);
         markertemp.push(mark);
-       // $(function () {$('[id=datetimepicker]').datepicker({
-         //       orientation: "bottom auto",
-           //     todayHighlight: true,
-            //});
-            //});
-            //$(function () {$('[id=datetimepicker]').datepicker('hide');});
 
         google.maps.event.addListener(infoBubble1, 'domready', function(){
             $(document).ready(function(){

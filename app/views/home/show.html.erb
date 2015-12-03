@@ -146,6 +146,14 @@
         </div>
       </div>
     </nav>
+    <div id="footer">
+        <adress id="adresssty">
+            © 
+            <strong>
+                <a target="_blank">JEONBYULJUN Corp.</a>
+            </strong>
+        </adress>
+    </div>
 </head>
 
 <body class="fullscreen background" style="background-image:url('/bg_main_sign_in.png'); height:1200px; width:auto; overflow:auto;">
@@ -253,6 +261,7 @@
           zoom: 4,
           mapTypeId: google.maps.MapTypeId.ROADMAP
         };
+        var infoBubbleArray = [];
         var map = new google.maps.Map(mapCanvas, mapOptions);
         <% @marker.each_with_index do |p ,i| %>
             if(<%=p.button%>==0){
@@ -314,16 +323,27 @@
                 '><input type="submit" value="Edit!" class="btn btn-success"><%end%>'+
                 '</div>';
                 
-                var infowindow = new google.maps.InfoWindow({
-                    content: contentString2
-                });
-                google.maps.event.addListener(infowindow, 'closeclick', function(){
+                infoBubble = new InfoBubble({
+                    maxWidth: 350,
+                    minWidth: 350,
+                    maxHeight: 500,
+                    minHeight: 500,
+                    backgroundColor: 'rgb(51,51,51)',
+                    borderWidth: 1,
+                    borderRadius: 4,
+                    borderColor: '#000000'
+                });    
+                infoBubble.addTab('your place', contentString2);
+                
+                google.maps.event.addListener(infoBubble, 'closeclick', function(){
                     marker.setAnimation(null);
                 });
+                infoBubbleArray.push(infoBubble);
+                var newinfoBubble = infoBubbleArray[<%=i%>];
                 google.maps.event.addListener(marker, 'click', function(){
-                    infowindow.open(map,marker);
+                    newinfoBubble.open(map,marker);
                     marker.setAnimation(google.maps.Animation.BOUNCE);   
-                })
+                });
             })(marker);
             markers.push(marker);
         <% end %>
