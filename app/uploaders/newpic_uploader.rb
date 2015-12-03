@@ -30,11 +30,14 @@ class NewpicUploader < CarrierWave::Uploader::Base
   # def scale(width, height)
   #   # do something
   # end
-  process resize_to_fill: [80, 80]
+  process resize_to_fill: [290, 235]
   #Create different versions of your uploaded files:
   
-  version :thumb do
+  version :timeline do
+    process :resize_to_fill => [200, 160]
+  end
   
+  version :thumb do
     process :resize_to_fill => [50, 50]
   end
   version :marker do
