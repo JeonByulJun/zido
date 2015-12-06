@@ -98,8 +98,8 @@
         color: #333333;
     }
 </style>
-<head>
-</head>
+
+<head></head>
 
 <body class="fullscreen background" style="background-image:url('/bg_main_sign_in.png'); height:1200px; width:auto; overflow:auto;">
     <!--<nav class="navbar navbar-custom navbar-static-top">-->
@@ -120,8 +120,8 @@
                   <div class="logo-container">          
                     <div class="logo2">
                         <div class="brand" id="topbrd">
-                           ZIDO
-                          <img src="/panda_logo.png" width=30 height=30>
+                            <strong>ZIDO</strong>
+                            <img src="/panda_logo.png" width=30 height=30>
                         </div>
                     </div>
                   </div>
@@ -162,20 +162,20 @@
                     </form>
                   </ul>
                 </li>
-                <li><button type="button" class="btn btn-success" id="info">Click me</button></li>
+                <li><button type="button" class="btn btn-success" id="info" style="margin-top: 15px; margin-left: 10px;">Click me</button></li>
+                
                 <script>
-
                     var content='<%=form_tag "/makemarker", method:"post", enctype:"multipart/form-data" do %>'+
-                                    '<input type="hidden" name="user" value=<%=current_user.id%>>'+
-                                    '<input type="text" name="indexname" id="custommarker">'+
-                                    '<div class="new_Btn2">Select Picture</div>'+
-                                    '<input type="file" name="image_file" id="html_btn2">'+
-                                    '<div style="text-align:center"><input type="submit" value="OK" class="btn btn-success"></div><% end %>';
+                                '<input type="hidden" name="user" value=<%=current_user.id%>>'+
+                                '<input type="text" name="indexname" id="custommarker">'+
+                                '<div class="new_Btn2">Select Picture</div>'+
+                                '<input type="file" name="image_file" id="html_btn2">'+
+                                '<div style="text-align:center"><input type="submit" value="OK" class="btn btn-success"></div><% end %>';
                       
         
                     $(document).ready(function(){
                         
-                        $('[id=info]').popover({title: "choose feeling", content: content, html:true, placement: "right"});
+                        $('[id=info]').popover({title: "Choose Your Icon", content: content, html:true, placement: "right"});
 
                     });
                     $('.new_Btn2').bind("click",function(){
@@ -183,7 +183,6 @@
                     });
                 </script>
             </ul>
-            
         </div>
       </div>
     </nav>
@@ -222,7 +221,6 @@
     </div>
 </div>
 
-
 <div id="content">
     <input id="pac-input" class="controls" type="text" placeholder="Search Box">        
     <div id="map"></div>
@@ -244,12 +242,12 @@
 </div>
 
 <div id="footer">
-<adress id="adresssty">
-    © 
-    <strong>
-        <a target="_blank">JEONBYULJUN Corp.</a>
-    </strong>
-</adress>
+    <adress id="adresssty">
+        © 
+        <strong>
+            <a target="_blank">JEONBYULJUN Corp.</a>
+        </strong>
+    </adress>
 </div>
 
 <!--infobubble style-->
@@ -593,7 +591,7 @@ function initMap() {
 
         google.maps.event.addListener(infoBubble1, 'domready', function(){
             $(document).ready(function(){
-                $('[id=infob]').popover({title: "Choose Feeling", content: str,html: true, placement: "right"});  
+                $('[id=infob]').popover({title: "Choose Your Icon", content: str,html: true, placement: "right"});  
             });
             $('[id=datetimepicker]').datepicker("setDate","0");
             $('[id=datetimepicker]').datepicker('hide');
