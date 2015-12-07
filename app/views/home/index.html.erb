@@ -1,5 +1,5 @@
-<link href='https://fonts.googleapis.com/css?family=Gloria+Hallelujah' rel='stylesheet' type='text/css'>
 <style>
+
     #topbrd{
         font-size: 30px;
         padding: 10px;
@@ -97,6 +97,7 @@
         font-size: 15px;
         color: #333333;
     }
+    
 </style>
 
 <head></head>
@@ -150,7 +151,16 @@
                 <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
                   <ul class="dropdown-menu">
+
                     <form name="checkboxForm" id="checkboxForm" action= '/show' method = 'get'>
+                        <form role="form">
+                            <div class="checkbox checkbox-primary">
+    <input type="checkbox" id="checkbox2" class="styled" onclick="cbchecked()">
+    <label for="checkbox2">
+        Check me out
+    </label>
+  </div>
+                        </form>
                         <input id="1cb" type="checkbox" name="btntype[]" value=1 onclick="cbcheck()"><ul id="chkbox">index1</ul><br>
                         <input id="2cb" type="checkbox" name="btntype[]" value=2 onclick="cbcheck()"><ul id="chkbox">index2</ul><br>
                         <input id="3cb" type="checkbox" name="btntype[]" value=3 onclick="cbcheck()"><ul id="chkbox">index3</ul><br>
@@ -572,10 +582,13 @@ function initMap() {
             borderColor: '#000000'
         });                           
         infoBubbleTemp.push(infoBubble1);
-
+        
         google.maps.event.addListener(infoBubble1, 'closeclick', function(){
             $(function () {$('[id=datetimepicker]').datepicker('hide');});
             mark.setMap(null);
+        });
+        google.maps.event.addListener(infoBubble1, 'click', function(){
+            $(function () {$('[id=datetimepicker]').datepicker('hide');});
         });
         
         infoBubble1.addTab('add your place', contentString)
@@ -597,6 +610,9 @@ function initMap() {
             $('[id=datetimepicker]').datepicker('hide');
             $('.new_Btn').bind("click",function(){
                 $('#html_btn').click();
+            });
+            $('[id=datetimepicker]').on('changeDate', function(ev){
+                $(this).datepicker('hide');
             });
         });
 
