@@ -11,7 +11,7 @@ class HomeController < ApplicationController
     end
     @lat=lat
     @lng=lng
-    @memos = Spot.where(user_id: current_user.id).order(:shigan)
+    @memos = Spot.where(user_id: current_user.id).order(shigan: :asc, created_at: :asc)
 
   end
   def show
