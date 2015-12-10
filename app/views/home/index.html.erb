@@ -25,6 +25,12 @@
         color: #333333;
         padding: 10px;
     }
+    #idh8{
+        font-family: 'Gloria Hallelujah', cursive;
+        font-size: 15px;
+        color: #333333;
+        padding: 10px;
+    }
     #inputbub0{
         font-family: 'Gloria Hallelujah', cursive;
         font-size: 13px;
@@ -153,16 +159,14 @@
                   <ul class="dropdown-menu">
 
                     <form name="checkboxForm" id="checkboxForm" action= '/show' method = 'get'>
-                        <form role="form">
                             <div class="checkbox checkbox-primary">
-    <input type="checkbox" id="checkbox2" class="styled" onclick="cbchecked()">
-    <label for="checkbox2">
-        Check me out
-    </label>
-  </div>
-                        </form>
-                        <input id="1cb" type="checkbox" name="btntype[]" value=1 onclick="cbcheck()"><ul id="chkbox">index1</ul><br>
-                        <input id="2cb" type="checkbox" name="btntype[]" value=2 onclick="cbcheck()"><ul id="chkbox">index2</ul><br>
+                            <input id="1cb" type="checkbox" name="btntype[]" value="1">
+                            <label for="1cb">index1</label>
+                        </div>
+                        <div class="checkbox checkbox-primary">
+                            <input id="2cb" type="checkbox" name="btntype[]" value="2">
+                            <label for="2cb">index2</label>
+                        </div>
                         <input id="3cb" type="checkbox" name="btntype[]" value=3 onclick="cbcheck()"><ul id="chkbox">index3</ul><br>
                         <%@custom.each_with_index do |p, i|%>
                             <input class="chkbox" id="<%=i+4%>cb" type="checkbox" name="btntype[]" value=<%=i+4%> onclick="cbcheck()"><ul id="chkbox"><%=p.indexname%></ul><br>
@@ -172,25 +176,40 @@
                     </form>
                   </ul>
                 </li>
-                <li><button type="button" class="btn btn-success" id="info" style="margin-top: 15px; margin-left: 10px;">Click me</button></li>
+                <li><button type="button" class="btn btn-success" id="info" data-toggle="modal" data-target="#custommarkermodal" style="margin-top: 15px; margin-left: 10px;">Click me</button></li>
+                    <div class="modal fade" id="custommarkermodal" role="dialog">
+                        <div class="modal-dialog modal-sm">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Choose Your Own Marker</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <%=form_tag "/makemarker", method:"post", enctype:"multipart/form-data" do %>
+                                        <input type="hidden" name="user" value=<%=current_user.id%>>
+                                        <input type="text" name="indexname" id="custommarker">
+                                        <div class="new_Btn2">Click Me To Select Picture</div>
+                                        <input type="file" name="image_file" id="html_btn2" onchange="detect(this.value)">
+                                        <div style="text-align:center"><input type="submit" id="custommarkerSelect" value="OK" class="btn btn-success" disabled></div>
+                                    <% end %>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 
-                <script>
-                    var content='<%=form_tag "/makemarker", method:"post", enctype:"multipart/form-data" do %>'+
-                                '<input type="hidden" name="user" value=<%=current_user.id%>>'+
-                                '<input type="text" name="indexname" id="custommarker">'+
-                                '<div class="new_Btn2">Select Picture</div>'+
-                                '<input type="file" name="image_file" id="html_btn2">'+
-                                '<div style="text-align:center"><input type="submit" value="OK" class="btn btn-success"></div><% end %>';
-                      
-        
-                    $(document).ready(function(){
-                        
-                        $('[id=info]').popover({title: "Choose Your Icon", content: content, html:true, placement: "right"});
 
-                    });
+                <script>
                     $('.new_Btn2').bind("click",function(){
                         $('#html_btn2').click();
                     });
+                    function detect(val){
+                        if(val){
+                            document.getElementById("custommarkerSelect").disabled = false;
+                        }
+                    }
                 </script>
             </ul>
         </div>
@@ -212,7 +231,7 @@
                         <% @memos.each_with_index do |p ,i| %>
                             <h7> <%=p.title%> </h7> <div style="text-align:right;"> <%=p.shigan%>. </div>
                             <img src="<%=p.my_image.timeline.url%>" style="padding: 10px;"> 
-                            <h8> <%=p.content%> </h8>
+                            <p id="idh8"> <%=p.content%> </p>
                             <br>
                             <%=form_tag '/goto', method:'post' do %>
                                 <input type="hidden" name="latitude" value=<%=p.lat%>>
