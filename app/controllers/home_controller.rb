@@ -1,12 +1,14 @@
 class HomeController < ApplicationController
   before_action :authenticate_user!
   def index
+    @zoom = 4
     @custom = Custommarker.where(user_id: current_user.id)
     lat=37
     lng=127
     unless params[:latitude]==nil
       lat=params[:latitude]
       lng=params[:longitude]
+      @zoom=15
       
     end
     @lat=lat

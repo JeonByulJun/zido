@@ -25,6 +25,12 @@
         color: #333333;
         padding: 10px;
     }
+    #idh8{
+        font-family: 'Gloria Hallelujah', cursive;
+        font-size: 15px;
+        color: #333333;
+        padding: 10px;
+    }
     #inputbub0{
         font-family: 'Gloria Hallelujah', cursive;
         font-size: 13px;
@@ -74,8 +80,17 @@
     .new_Btn2{
         text-align: center;
         font-family: 'Gloria Hallelujah', cursive;
-        color:#000000;
+        color:#333333;
+        border-width: 60px;
+        padding: 0px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        border: 10px solid gray;
+        border-color: #333333;
+        border-radius: 10px;
+        width: 188px;
     }
+
     #pac-input:focus {
       border-color: #4d90fe;
     }
@@ -96,6 +111,7 @@
         font-family: 'Gloria Hallelujah', cursive;
         font-size: 15px;
         color: #333333;
+        width: 188px;
     }
     
 </style>
@@ -153,44 +169,82 @@
                   <ul class="dropdown-menu">
 
                     <form name="checkboxForm" id="checkboxForm" action= '/show' method = 'get'>
-
-                            <div class="checkbox checkbox-primary">
-                              <input type="checkbox" id="checkbox2" class="styled" onclick="cbchecked()">
-                              <label for="checkbox2">
-                                Check me out
-                              </label>
-                            </div>
-
-                        <input id="1cb" type="checkbox" name="btntype[]" value=1 onclick="cbcheck()"><ul id="chkbox">index1</ul><br>
-                        <input id="2cb" type="checkbox" name="btntype[]" value=2 onclick="cbcheck()"><ul id="chkbox">index2</ul><br>
-                        <input id="3cb" type="checkbox" name="btntype[]" value=3 onclick="cbcheck()"><ul id="chkbox">index3</ul><br>
+                        <div class="checkbox checkbox-primary" style="padding-left: 30px">
+                            <input id="1cb" type="checkbox" name="btntype[]" value="1" onclick="cbcheck()" style="margin: 10px;">
+                            <label for="1cb">index1</label>
+                        </div>
+                        <div class="checkbox checkbox-success" style="padding-left: 30px">
+                            <input id="2cb" type="checkbox" name="btntype[]" value="2" onclick="cbcheck()" style="margin: 10px;">
+                            <label for="2cb">index2</label>
+                        </div>
+                        <div class="checkbox checkbox-danger" style="padding-left: 30px">
+                            <input id="3cb" type="checkbox" name="btntype[]" value="3" onclick="cbcheck()" style="margin: 10px;">
+                            <label for="3cb">index3</label>
+                        </div>
                         <%@custom.each_with_index do |p, i|%>
-                            <input class="chkbox" id="<%=i+4%>cb" type="checkbox" name="btntype[]" value=<%=i+4%> onclick="cbcheck()"><ul id="chkbox"><%=p.indexname%></ul><br>
+                            <% if i % 5 == 0 %>
+                                <div class="checkbox checkbox-info checkbox-circle" style="padding-left: 30px">
+                                    <input id="<%=i+4%>cb" type="checkbox" name="btntype[]" value=<%=i+4%> onclick="cbcheck()" style="margin: 10px;">
+                                    <label for="<%=i+4%>cb"> <%=p.indexname%> </label>
+                                </div>
+                            <% elsif i % 5 == 1 %>
+                                <div class="checkbox checkbox-warning checkbox-circle" style="padding-left: 30px">
+                                    <input id="<%=i+4%>cb" type="checkbox" name="btntype[]" value=<%=i+4%> onclick="cbcheck()" style="margin: 10px;">
+                                    <label for="<%=i+4%>cb"> <%=p.indexname%> </label>
+                                </div>
+                            <% elsif i % 5 == 2 %>
+                                <div class="checkbox checkbox-primary checkbox-circle" style="padding-left: 30px">
+                                    <input id="<%=i+4%>cb" type="checkbox" name="btntype[]" value=<%=i+4%> onclick="cbcheck()" style="margin: 10px;">
+                                    <label for="<%=i+4%>cb"> <%=p.indexname%> </label>
+                                </div>
+                            <% elsif i % 5 == 3 %>
+                                <div class="checkbox checkbox-danger checkbox-circle" style="padding-left: 30px">
+                                    <input id="<%=i+4%>cb" type="checkbox" name="btntype[]" value=<%=i+4%> onclick="cbcheck()" style="margin: 10px;">
+                                    <label for="<%=i+4%>cb"> <%=p.indexname%> </label>
+                                </div>
+                            <% elsif i % 5 == 4 %>
+                                <div class="checkbox checkbox-success checkbox-circle" style="padding-left: 30px">
+                                    <input id="<%=i+4%>cb" type="checkbox" name="btntype[]" value=<%=i+4%> onclick="cbcheck()" style="margin: 10px;">
+                                    <label for="<%=i+4%>cb"> <%=p.indexname%> </label>
+                                </div>
+                            <% end %>
                         <% end %>
                     <li role="separator" class="divider"></li>
                         <input id="btnselect" type="submit" value="What You Want to See" class="btn btn-success" disabled>
                     </form>
                   </ul>
                 </li>
-                <li><button type="button" class="btn btn-success" id="info" style="margin-top: 15px; margin-left: 10px;">Click me</button></li>
+                <li><button type="button" class="btn btn-success" id="info" data-toggle="modal" data-target="#custommarkermodal" style="margin-top: 15px; margin-left: 10px;">Click me</button></li>
+                        <div class="modal fade" id="custommarkermodal" role="dialog">
+                            <div class="modal-dialog modal-sm">
+                                <div class="modal-content" style="width:230px;">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Choose Your<br>Own Marker <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <%=form_tag "/makemarker", method:"post", enctype:"multipart/form-data" do %>
+                                            <input type="hidden" name="user" value=<%=current_user.id%>>
+                                            <input type="text" name="indexname" id="custommarker">
+                                            <div class="new_Btn2">Click Me To Select Picture</div>
+                                            <input type="file" name="image_file" id="html_btn2" onchange="detect(this.value)">
+                                            <div style="text-align:center"><input type="submit" id="custommarkerSelect" value="OK" class="btn btn-third" disabled></div>
+                                        <% end %>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                 
-                <script>
-                    var content='<%=form_tag "/makemarker", method:"post", enctype:"multipart/form-data" do %>'+
-                                '<input type="hidden" name="user" value=<%=current_user.id%>>'+
-                                '<input type="text" name="indexname" id="custommarker">'+
-                                '<div class="new_Btn2">Select Picture</div>'+
-                                '<input type="file" name="image_file" id="html_btn2">'+
-                                '<div style="text-align:center"><input type="submit" value="OK" class="btn btn-success"></div><% end %>';
-                      
-        
-                    $(document).ready(function(){
-                        
-                        $('[id=info]').popover({title: "Choose Your Icon", content: content, html:true, placement: "right"});
 
-                    });
+                <script>
                     $('.new_Btn2').bind("click",function(){
                         $('#html_btn2').click();
                     });
+                    function detect(val){
+                        if(val){
+                            document.getElementById("custommarkerSelect").disabled = false;
+                        }
+                    }
                 </script>
             </ul>
         </div>
@@ -203,10 +257,10 @@
         <div class="modal-content">
             <div class="close-modal" data-dismiss="modal">
             </div>
-            <div class="row">
+            <div class="row" style="width: auto;">
                 <div class="col-lg-4">
-                    <div class="modal-header">
-                        <h4 class="modal-title"> Timeline </h4>
+                    <div class="modal-header" style="width:500px;">
+                        <h4 class="modal-title"> Timeline <span class="glyphicon glyphicon-road" aria-hidden="true"> </h4>
                     </div>
                     <div class="modal-body" style="width: 500px;">
                         <% @memos.each_with_index do |p ,i| %>
@@ -357,7 +411,7 @@ function initMap() {
 
     var mapOptions = {
       center: new google.maps.LatLng(lat, lng),
-      zoom: 4,
+      zoom: <%=@zoom%>,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
     var map = new google.maps.Map(mapCanvas, mapOptions);
